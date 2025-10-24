@@ -32,7 +32,7 @@ async function authenticatedFetch(url, options = {}) {
  * @returns {Promise<Array>} Array objek admin {id, nama, phone_number, is_primary_contact}.
  */
 export async function getAllAdministrators() {
-    const url = 'http://localhost:8000/api/admin/administrators';
+    const url = '/api/admin/administrators';
     const responseData = await authenticatedFetch(url);
     return responseData.data || [];
 }
@@ -43,7 +43,7 @@ export async function getAllAdministrators() {
  * @returns {Promise<Object>} Respons sukses dari server.
  */
 export async function setPrimaryContactAdmin(adminId) {
-    const url = `http://localhost:8000/api/admin/administrators/${adminId}/set-primary-contact`;
+    const url = `/api/admin/administrators/${adminId}/set-primary-contact`;
     return await authenticatedFetch(url, {
         method: 'PUT',
         // Tidak perlu body karena ID sudah ada di URL
@@ -56,7 +56,7 @@ export async function setPrimaryContactAdmin(adminId) {
  * Mengambil detail profil admin yang sedang login.
  */
 export async function getCurrentAdminProfile() {
-    const url = 'http://localhost:8000/api/admin/profile';
+    const url = '/api/admin/profile';
     const responseData = await authenticatedFetch(url);
     return responseData.data || {};
 }
@@ -64,7 +64,7 @@ export async function getCurrentAdminProfile() {
  * Memperbarui profil (nama, no. telepon) admin yang sedang login.
  */
 export async function updateCurrentAdminProfile(name, phoneNumber) {
-    const url = 'http://localhost:8000/api/admin/profile';
+    const url = '/api/admin/profile';
     return await authenticatedFetch(url, {
         method: 'PUT',
         body: JSON.stringify({ nama: name, phone_number: phoneNumber })
@@ -74,7 +74,7 @@ export async function updateCurrentAdminProfile(name, phoneNumber) {
  * Memperbarui password admin yang sedang login.
  */
 export async function updateCurrentAdminPassword(currentPassword, newPassword, newPasswordConfirm) {
-    const url = 'http://localhost:8000/api/admin/profile/password';
+    const url = '/api/admin/profile/password';
     return await authenticatedFetch(url, {
         method: 'PUT',
         body: JSON.stringify({

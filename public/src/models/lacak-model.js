@@ -1,7 +1,7 @@
 export class LacakModel {
     constructor() {
         // Endpoint API Anda untuk melacak status
-        this.baseUrl = 'http://localhost:8000/api/tracking/';
+        this.baseUrl = '/api/tracking/';
     }
 
     /**

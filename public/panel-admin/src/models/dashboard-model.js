@@ -18,7 +18,7 @@ async function fetchSubmissions() {
         return null;
     }
 
-    const apiEndpoint = 'http://localhost:8000/api/admin/pengajuan';
+    const apiEndpoint = '/api/admin/pengajuan';
 
     try {
         const response = await fetch(apiEndpoint, {

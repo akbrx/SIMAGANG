@@ -3,7 +3,7 @@
  * Bertanggung jawab untuk semua interaksi dengan API terkait data pengajuan.
  */
 
-const API_BASE_URL = 'http://localhost:8000/api/admin/pengajuan';
+const API_BASE_URL = '/api/admin/pengajuan';
 
 /**
  * Mengambil semua data pengajuan dari server.
