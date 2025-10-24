@@ -425,13 +425,17 @@ body {
     align-items: center;
     gap: 8px;
     padding: 10px 18px;
-    background-color: #6c757d;
+    background-color: #2a689e;
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
     font-size: 0.9rem;
     font-weight: 500;
+}
+
+.btn-secondary:hover {
+    background-color: #2c5ae9;
 }
 
 /* --- Grid untuk Kartu Surat --- */
@@ -771,3 +775,148 @@ body {
 .btn-secondary-confirm:hover {
     background-color: #f8f9fa;
 }
+
+/* ==========================================================================
+   11. HALAMAN PENGATURAN (UPDATE)
+   - Gaya untuk form pengaturan kontak, profil, dan password.
+   ========================================================================== */
+
+.settings-page .page-header {
+    margin-bottom: 30px;
+}
+
+.settings-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 30px;
+}
+@media (min-width: 992px) {
+    .settings-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .settings-grid > .settings-card:last-child:nth-child(odd) {
+        grid-column: 1 / -1;
+    }
+}
+
+.settings-card {
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.07);
+    border: 1px solid #e9ecef;
+}
+.settings-card h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+    color: #343a40;
+}
+.settings-card p:not(.info-message) {
+    color: #6c757d;
+    margin-bottom: 30px;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+.settings-card .form-group {
+    position: relative; /* Diperlukan untuk positioning label */
+    margin-bottom: 35px; /* Beri ruang lebih untuk label yang melayang */
+}
+
+/* [DIHAPUS] Gaya label standar dihapus */
+/* .settings-card label { ... } */
+
+/* [PERUBAHAN] Gaya Input Dasar */
+.settings-card input[type="text"],
+.settings-card input[type="tel"],
+.settings-card input[type="password"] {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: #495057; 
+}
+
+/* [BARU] Gaya untuk Floating Label */
+.settings-card .form-group.floating-label label {
+    position: absolute;
+    top: 13px; /* Sesuaikan agar pas di tengah input */
+    left: 15px;
+    font-size: 1rem;
+    color: #6c757d;
+    pointer-events: none; /* Agar klik menembus ke input */
+    transition: all 0.2s ease-out;
+    background-color: #fff; /* Agar menutupi border input saat melayang */
+    padding: 0 5px; /* Padding samping agar tidak terlalu mepet */
+}
+
+/* [BARU] Efek saat input focus atau terisi */
+.settings-card .form-group.floating-label input:focus + label,
+.settings-card .form-group.floating-label input:not(:placeholder-shown) + label {
+    top: -10px; /* Angkat label ke atas */
+    left: 10px;
+    font-size: 0.8rem; /* Kecilkan font */
+    color: #2c5ae9; /* Ubah warna label */
+}
+
+/* [PERUBAHAN] Gaya input saat focus */
+.settings-card input:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* [PERUBAHAN] Gaya Select (tidak menggunakan floating label) */
+.settings-card .form-group select,
+.settings-card .filter-select {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    box-sizing: border-box;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    color: #495057; 
+    cursor: pointer;
+}
+
+.settings-card select:focus {
+     outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+.settings-card small {
+    display: block;
+    margin-top: 10px; 
+    color: #6c757d;
+    font-size: 0.85rem;
+}
+.btn-save {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.95rem;
+    background-color: #2c5ae9;
+    color: #fff;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 150px;
+}
+.btn-save:hover { background-color: #1c3e91; }
+.btn-save:disabled { background-color: #aeb8d9; cursor: not-allowed; }
+.btn-save .spinner { width: 18px; height: 18px; border: 3px solid rgba(255, 255, 255, 0.3); border-top-color: #ffffff; border-radius: 50%; animation: spin 1s linear infinite; display: none; }
+.btn-save.loading .spinner { display: block; }
+.btn-save.loading .btn-text { display: none; }
+@keyframes spin { to { transform: rotate(360deg); } }
+.settings-card .info-message { text-align: left; margin-top: 20px; padding: 12px 15px; font-size: 0.9rem; border-radius: 8px; }
+.settings-card .info-message.error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
