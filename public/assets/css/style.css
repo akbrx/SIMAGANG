@@ -955,7 +955,7 @@ body {
 /* CSS untuk catatan melayang dengan gaya modern */
 .floating-note {
     position: absolute;
-    top: 100px;
+    bottom: 30px;
     left: 30px;
     width: 280px;
     background-color: transparent; /* Warna biru muda */
