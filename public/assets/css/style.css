@@ -526,7 +526,7 @@ body {
     margin-bottom: 15px;
     text-shadow: 0 0 15px rgba(0, 123, 255, 0.3);
 }
-.tracking-container > p { /* Target direct child p */
+.tracking-container > p { 
     font-size: 1.1rem;
     color: #a9a9b3;
     margin-bottom: 50px;
@@ -578,6 +578,97 @@ body {
 .not-found-container h2 { font-size: 2rem; font-weight: 600; color: #ffffff; margin: 10px 0; }
 .not-found-container p { color: #a9a9b3; margin-bottom: 30px; }
 
+/* === CSS HALAMAN SUKSES PENGAJUAN === */
+.success-container {
+    max-width: 700px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(46, 213, 115, 0.3);
+    border-radius: 15px;
+    padding: 50px 40px;
+}
+
+.success-icon {
+    width: 70px;
+    height: 70px;
+    background-color: #2ed573;
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 30px auto;
+}
+
+.success-container h1 {
+    font-size: 2.2rem;
+    color: #2ed573;
+    margin-bottom: 20px;
+}
+
+.success-container p {
+    color: #a9a9b3;
+    margin-bottom: 30px;
+}
+
+.tracking-id-display {
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px dashed #475569;
+    padding: 15px;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 2px;
+    border-radius: 8px;
+    margin-bottom: 40px;
+}
+
+.success-actions {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* === TOMBOL COPY TO CLIPBOARD === */
+.tracking-id-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: 1px dashed #475569;
+    padding: 5px 5px 5px 20px; /* Padding kiri lebih besar */
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+#tracking-id-text {
+    flex-grow: 1;
+    font-family: 'Roboto Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 2px;
+}
+
+.copy-button {
+    background-color: #334155;
+    border: none;
+    border-radius: 6px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.copy-button:hover {
+    background-color: #475569;
+}
 
 /* ===================================================================
    8. Tampilan Hasil Pelacakan (Kartu Detail, Status, Timeline)
