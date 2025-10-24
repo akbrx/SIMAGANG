@@ -20,7 +20,7 @@ export class LacakView {
                     <button id="close-note" class="close-button" aria-label="Tutup">&times;</button>
                 </div>
                 <div class="note-body">
-                    <p>Lupa dengan ID Lacak Anda? Klik <a href="#" id="link-lupa-id">di sini</a> untuk bantuan.</p>
+                    <p>Lupa dengan ID Lacak Anda? Klik <a href="#" id="link-lupa-id" class=note-link>di sini</a> untuk bantuan.</p>
                 </div>
             </div>
 
