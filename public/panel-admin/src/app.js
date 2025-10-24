@@ -7,9 +7,10 @@ import * as dashboardView from './views/dashboard-view.js';
 import * as dashboardController from './controllers/dashboard-controller.js';
 import * as suratView from './views/surat-view.js';
 import * as suratController from './controllers/surat-controller.js';
-// [PERBAIKAN] Impor dengan nama file yang benar
 import * as settingsView from './views/settings-view.js';
 import * as settingsController from './controllers/settings-controller.js';
+import * as resetPasswordView from './views/reset-password-view.js';
+import * as resetPasswordController from './controllers/reset-password-controller.js';
 
 
 export function showConfirmation(title, message, confirmText = 'Ya') {
@@ -52,8 +53,8 @@ const routes = {
     '#login': { view: loginView, controller: loginController },
     '#dashboard': { view: dashboardView, controller: dashboardController },
     '#surat': { view: suratView, controller: suratController },
-    // [PERBAIKAN] Menggunakan nama rute yang benar
-    '#pengaturan': { view: settingsView, controller: settingsController }
+    '#pengaturan': { view: settingsView, controller: settingsController },
+    '#reset-password': { view: resetPasswordView, controller: resetPasswordController }
 };
 
 // Fungsi untuk menangani status aktif pada menu sidebar
