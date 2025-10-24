@@ -34,7 +34,7 @@ async function publicFetch(url, options = {}) {
  */
 export async function resetPassword(token, newPassword, newPasswordConfirm) {
     // --- PASTIKAN URL INI SESUAI DENGAN ENDPOINT BACKEND ANDA ---
-    const url = 'http://localhost:8000/api/admin/reset-password'; // Contoh URL
+    const url = '/api/admin/reset-password'; // Contoh URL
 
     return await publicFetch(url, {
         method: 'POST', // Sesuaikan method jika backend menggunakan PUT
