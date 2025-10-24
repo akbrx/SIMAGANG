@@ -3,7 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\StudentSubmissionController;
 use App\Http\Controllers\Api\AdminSubmissionController;
-use App\Http\Controllers\Api\AuthController; // PENTING: Pastikan ini di-import
+use App\Http\Controllers\Api\AuthController; 
+use App\Http\Controllers\Api\AdminProfileController; 
+use App\Http\Controllers\Api\AdministratorController; 
+use App\Http\Controllers\Api\PublicContactController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,10 +34,11 @@ Route::put('/pengajuan/{token}', [StudentSubmissionController::class, 'update'])
 // GET /api/tracking/{token}: Endpoint untuk MELACAK status surat
 Route::get('tracking/{token}', [StudentSubmissionController::class, 'show']);
 
-// [BARU] Endpoint aman untuk mengambil semua data submission setelah verifikasi Magic Link
+// Endpoint aman untuk mengambil semua data submission setelah verifikasi Magic Link
 Route::get('portal/pengajuan', [StudentSubmissionController::class, 'getSubmissionsForPortal']);
 
-// Catatan: Rute file download dipindahkan ke dalam group Admin untuk keamanan.
+// Endpoint GET kontak
+Route::get('/contact-info', [PublicContactController::class, 'getContactInfo']);
 
 
 // =========================================================================
@@ -64,5 +68,14 @@ Route::prefix('admin')->group(function () {
         
         // [BARU] DELETE /api/admin/pengajuan/{id}: Menghapus pengajuan
         Route::delete('pengajuan/{id}', [AdminSubmissionController::class, 'destroy']);
+
+        // [BARU] Pengelolaan Profil Admin Sendiri
+        Route::get('profile', [AdminProfileController::class, 'show']);
+        Route::put('profile', [AdminProfileController::class, 'update']);
+        Route::put('profile/password', [AdminProfileController::class, 'updatePassword']);
+
+        // [BARU] Daftar Semua Admin (untuk dropdown)
+        Route::get('administrators', [AdministratorController::class, 'index']);
+        Route::put('administrators/{id}/set-primary-contact', [AdministratorController::class, 'setPrimaryContact']);
     });
 });

@@ -1,34 +1,37 @@
-<!-- index.html -->
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin SIMAGANG</title>
-    <!-- [BARU] Menambahkan Font Awesome untuk ikon -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Main CSS -->
     <link rel="stylesheet" href="{{ asset('panel-admin/assets/css/style.css') }}">
 </head>
 <body>
     <div id="app-wrapper">
-        <!-- [PERUBAHAN] Struktur Sidebar diperbarui -->
-        <div class="sidebar" id="sidebar">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <div class="sidebar-logo-container">
-                    <img src="../assets/img/kominfo.png" alt="Logo Kominfo">
-                    <img src="../assets/img/pemkot.png" alt="Logo Pemkot">
+                    {{-- Ganti path gambar sesuai struktur folder public Anda --}}
+                    <img src="{{ asset('panel-admin/assets/img/kominfo.png') }}" alt="Logo Kominfo">
+                    <img src="{{ asset('panel-admin/assets/img/pemkot.png') }}" alt="Logo Pemkot">
                 </div>
                 <h3>SIMAGANG</h3>
             </div>
 
             <div class="sidebar-profile">
+                {{-- Anda bisa menampilkan nama admin yang login di sini menggunakan Auth::user()->nama --}}
                 <span class="profile-name"></span>
             </div>
 
             <ul class="sidebar-menu">
                 <li><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="#surat"><i class="fas fa-envelope"></i> Surat</a></li>
+                {{-- [BARU] Menambahkan link Pengaturan --}}
+                <li><a href="#pengaturan"><i class="fas fa-cog"></i> Pengaturan</a></li>
             </ul>
 
             <div class="sidebar-footer">
@@ -36,18 +39,21 @@
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
             </div>
-        </div>
+        </aside>
 
-        <div class="main-content" id="main-content">
+        <!-- Konten Utama -->
+        <main class="main-content" id="main-content">
              <button id="sidebar-toggle" class="sidebar-toggle" title="Buka/Tutup Sidebar">
                 <i class="fas fa-bars"></i>
             </button>
+            {{-- Konten dinamis akan dimuat oleh JavaScript ke dalam div #app --}}
             <div class="content-area" id="app">
-
+                {{-- Placeholder - Konten awal bisa kosong atau berisi loading spinner --}}
             </div>
-        </div>
+        </main>
     </div>
 
+    <!-- Modal Konfirmasi Kustom -->
     <div id="confirmation-modal" class="modal-overlay confirmation-modal">
         <div class="modal-content">
             <div class="confirmation-icon">
@@ -62,9 +68,12 @@
         </div>
     </div>
     
+    <!-- Container untuk notifikasi Toast -->
+    <div id="toast-container"></div>
+
+    <!-- Library Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Main JavaScript App -->
     <script type="module" src="{{ asset('panel-admin/src/app.js') }}"></script>
-            <div id="toast-container"></div>
 </body>
 </html>
-

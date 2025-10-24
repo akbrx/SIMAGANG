@@ -58,28 +58,102 @@
     </div>
 
     <div class="contact-widget">
-        <div id="contact-popup" class="contact-popup">
-            
-            <!-- <div class="popup-logo">
-                <img src="assets/img/admin.png" alt="Logo Admin">
-            </div> -->
-
-            <div class="popup-header">
-                <h4>Hubungi Admin</h4>
-                <button id="close-popup-btn" class="popup-close-btn">&times;</button>
-            </div>
-            <div class="popup-body">
-                <p>Mengalami kendala? Hubungi admin via WhatsApp di nomor berikut:</p>
-                <a href="https://wa.me/6282256256013" target="_blank" class="admin-contact-link">
-                    0822-5625-6013
-                </a>
-            </div>
+    <div id="contact-popup" class="contact-popup">
+        <div class="popup-header">
+            <h4>Hubungi Admin</h4>
+            <button id="close-popup-btn" class="popup-close-btn">&times;</button>
         </div>
-
-        <button id="contact-fab" class="contact-fab" aria-label="Hubungi Admin">
-            <img src="assets/img/admin.png" alt="Logo Admin">
-        </button>
+        <div class="popup-body">
+            <p>Mengalami kendala? Hubungi admin via WhatsApp di nomor berikut:</p>
+            {{-- [PERUBAHAN] Hapus nomor hardcoded, tambahkan ID --}}
+            <a href="#" target="_blank" class="admin-contact-link" id="admin-whatsapp-link">
+                <span id="admin-phone-number">Memuat nomor...</span>
+            </a>
+        </div>
     </div>
+
+    <button id="contact-fab" class="contact-fab" aria-label="Hubungi Admin">
+        <img src="{{ asset('assets/img/admin.png') }}" alt="Logo Admin"> {{-- Pastikan path asset benar --}}
+    </button>
+</div>
+
+{{-- ... (kode Blade Anda selanjutnya) ... --}}
+
+{{-- [BARU] Tambahkan script di bagian bawah body --}}
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const contactFab = document.getElementById('contact-fab');
+        const contactPopup = document.getElementById('contact-popup');
+        const closePopupBtn = document.getElementById('close-popup-btn');
+        const adminWhatsAppLink = document.getElementById('admin-whatsapp-link');
+        const adminPhoneNumberSpan = document.getElementById('admin-phone-number');
+
+        // --- Logika untuk buka/tutup popup ---
+        if (contactFab && contactPopup && closePopupBtn) {
+            contactFab.addEventListener('click', () => {
+                contactPopup.classList.toggle('show');
+            });
+
+            closePopupBtn.addEventListener('click', () => {
+                contactPopup.classList.remove('show');
+            });
+
+            // Tutup jika klik di luar popup
+            window.addEventListener('click', (event) => {
+                if (event.target !== contactPopup && !contactPopup.contains(event.target) && event.target !== contactFab && !contactFab.contains(event.target)) {
+                    contactPopup.classList.remove('show');
+                }
+            });
+        }
+
+        // --- [BARU] Logika untuk mengambil nomor telepon dari API ---
+        async function fetchAdminContact() {
+            // --- PASTIKAN URL ENDPOINT INI BENAR ---
+            const apiUrl = '{{ url('/api/contact-info') }}'; // Menggunakan URL helper Laravel
+
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error('Gagal mengambil data kontak');
+                }
+                const data = await response.json();
+
+                if (data.success && data.data && data.data.phone_number) {
+                    const rawPhoneNumber = data.data.phone_number;
+                    
+                    // Format nomor untuk teks tampilan (misal: 0812-xxxx-xxxx)
+                    let displayPhoneNumber = rawPhoneNumber;
+                    if (rawPhoneNumber.startsWith('0') && rawPhoneNumber.length > 4) {
+                       displayPhoneNumber = rawPhoneNumber.replace(/(\d{4})(\d{4})(\d+)/, '$1-$2-$3');
+                    }
+
+                    // Format nomor untuk link WhatsApp (ganti 0 -> 62)
+                    let whatsappNumber = rawPhoneNumber;
+                    if (whatsappNumber.startsWith('0')) {
+                        whatsappNumber = '62' + whatsappNumber.substring(1);
+                    }
+                    const whatsappLink = `https://wa.me/${whatsappNumber}`;
+
+                    // Update UI
+                    if (adminPhoneNumberSpan) adminPhoneNumberSpan.textContent = displayPhoneNumber;
+                    if (adminWhatsAppLink) adminWhatsAppLink.href = whatsappLink;
+
+                } else {
+                    if (adminPhoneNumberSpan) adminPhoneNumberSpan.textContent = 'Nomor tidak tersedia';
+                    if (adminWhatsAppLink) adminWhatsAppLink.removeAttribute('href');
+                }
+
+            } catch (error) {
+                console.error('Error fetching contact:', error);
+                if (adminPhoneNumberSpan) adminPhoneNumberSpan.textContent = 'Gagal memuat';
+                if (adminWhatsAppLink) adminWhatsAppLink.removeAttribute('href');
+            }
+        }
+
+        // Panggil fungsi untuk mengambil data saat halaman dimuat
+        fetchAdminContact();
+    });
+</script>
     </body> 
     </body>
 </html>
