@@ -36,7 +36,6 @@ body::-webkit-scrollbar,
 #app::-webkit-scrollbar,
 .page-container::-webkit-scrollbar,
 .hero-container::-webkit-scrollbar {
-    /* Untuk Chrome, Safari, dll. */
     display: none;
 }
 body {
@@ -101,7 +100,6 @@ body {
     box-sizing: border-box;
 }
 
-/* Loader untuk Tombol */
 .button--loading {
     display: flex;
     justify-content: center;
@@ -169,7 +167,6 @@ body {
     flex-wrap: wrap;
 }
 
-/* Animasi Ketik H1 */
 .typing-animation {
     display: inline-block;
     overflow: hidden;
@@ -183,7 +180,6 @@ body {
     to { width: 25ch; }
 }
 
-/* Animasi Fade-in H2 */
 .content-container h2 {
     opacity: 0;
     animation: fade-in-up 1s ease-out 2s forwards;
@@ -198,7 +194,7 @@ body {
    4. Tampilan Navbar & Sidebar
    =================================================================== */
 .navbar {
-    position: absolute; /* Diubah jadi fixed agar selalu di atas */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -271,18 +267,16 @@ body {
 .navbar-links a:hover::before,
 .navbar-links a:hover::after { opacity: 1; transform: translateY(0); }
 
-/* Tombol Hamburger */
 .hamburger-button {
     display: none;
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
-    z-index: 1001; /* Pastikan di atas overlay */
+    z-index: 1001; 
 }
 .hamburger-button svg { color: #fdfeff; }
 
-/* Sidebar & Overlay */
 .sidebar, .sidebar-overlay {
     position: fixed;
     top: 0;
@@ -599,7 +593,6 @@ body {
 }
 .error-message { color: #ff6b6b; text-align: center; font-weight: 600; }
 
-/* Detail Pengajuan */
 .submission-details {
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding-bottom: 20px;
@@ -610,7 +603,6 @@ body {
 .detail-item .detail-label { display: block; font-size: 0.9rem; color: #a9a9b3; margin-bottom: 5px; }
 .detail-item .detail-value { display: block; font-size: 1rem; font-weight: 600; color: #ffffff; }
 
-/* Kartu Status */
 .status-card {
     display: flex;
     align-items: center;
@@ -646,7 +638,6 @@ body {
 .status-proses .status-icon { color: #ffffff; }
 .status-proses .status-details h4 { color: #007bff; }
 
-/* Timeline Status */
 .status-timeline { display: flex; justify-content: space-between; position: relative; }
 .status-timeline::before {
     content: '';
@@ -798,7 +789,7 @@ body {
     padding: 10px 15px;
     background-color: rgba(2, 7, 46, 0.7);
     border-bottom: 1px solid #0D1164;
-    cursor: grab; /* Kursor 'mengambil' */
+    cursor: grab;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -806,19 +797,19 @@ body {
     border-top-right-radius: 12px;
 }
 .note-icon {
-    color: #007bff; /* Warna ikon (contoh: biru) */
+    color: #007bff;
     margin-right: 4px;
 }   
 
 .note-title {
     font-weight: 600;
-    color: #4338ca; /* Warna biru tua */
+    color: #4338ca;
 }
 
 .note-body {
     padding: 15px;
     font-size: 0.9rem;
-    color: #4f46e5; /* Warna biru medium */
+    color: #4f46e5; 
     line-height: 1.5;
 }
 .note-body p {
@@ -826,13 +817,13 @@ body {
 }
 
 a.note-link {
-    color: #1363f9; /* Beri warna biru yang cerah */
-    font-weight: 600; /* Tebalkan sedikit */
-    text-decoration: underline; /* Beri garis bawah agar jelas ini adalah link */
-    text-transform: none; /* Hapus 'uppercase' jika ada dari navbar */
-    letter-spacing: normal; /* Hapus 'letter-spacing' jika ada dari navbar */
-    padding: 0; /* Hapus padding jika ada dari navbar */
-    border: none; /* Hapus border jika ada */
+    color: #1363f9;
+    font-weight: 600;
+    text-decoration: underline;
+    text-transform: none;
+    letter-spacing: normal;
+    padding: 0;
+    border: none;
 }
 
 .close-button {
@@ -905,7 +896,7 @@ a.note-link {
     position: fixed;
     bottom: 30px;
     right: 30px;
-    z-index: 9999; /* Paling depan */
+    z-index: 9999;
 }
 .contact-fab {
     width: 60px;
@@ -990,7 +981,7 @@ a.note-link {
 
     /* Tipografi */
     .content-container h1 { font-size: 2.2rem; }
-    .typing-animation-h1 { font-size: 2.2rem; } /* Jaga konsistensi */
+    .typing-animation-h1 { font-size: 2.2rem; } 
     .content-container h2 { font-size: 1.1rem; }
     .how-it-works h2, .faq-container h2 { font-size: 2rem; }
 
@@ -1009,7 +1000,6 @@ a.note-link {
 }
 
 @media (max-width: 600px) {
-    /* Detail Grid di halaman lacak */
     .detail-grid { grid-template-columns: 1fr; }
 }
 
@@ -1036,7 +1026,7 @@ a.note-link {
 
 .footer-about, .footer-contact, .footer-links {
     flex: 1;
-    min-width: 280px; /* Agar responsif */
+    min-width: 280px;
 }
 
 .footer-logo {
@@ -1046,7 +1036,7 @@ a.note-link {
 }
 
 .footer-logo img {
-    height: 50px; /* Menyamakan tinggi logo */
+    height: 50px;
     width: auto;
 }
 
