@@ -50,8 +50,10 @@ export class PengajuanView {
 
             <div id="pengajuan-modal" class="modal-overlay">
                 <div class="modal-content">
-                    <button id="btn-close-modal" class="modal-close">&times;</button>
-                    <h2>Formulir Pengajuan Magang</h2>
+                    <div class="modal-header">
+                        <h2>Formulir Pengajuan Magang</h2>
+                        <button id="btn-close-modal" class="modal-close">&times;</button>
+                    </div>
                     <form id="form-pengajuan-magang">
                         <div class="form-group">
                             <label for="nama">Nama Lengkap</label>

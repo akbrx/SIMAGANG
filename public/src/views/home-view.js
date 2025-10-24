@@ -56,7 +56,7 @@ export class HomeView {
                             <span class="accordion-icon">+</span>
                         </button>
                         <div class="accordion-body">
-                            <p>Anda bisa menggunakan fitur "Lupa ID". Silakan buka halaman Lacak, lalu klik link yang ada di dalam kotak catatan, atau langsung klik <a href="#" id="faq-link-lupa-id">di sini</a>.</p>
+                            <p>Anda bisa menggunakan fitur "Lupa ID". Silakan buka halaman Lacak, lalu klik link yang ada di dalam kotak catatan, atau langsung klik <a href="#" id="faq-link-lupa-id" class="note-link">di sini</a>.</p>
                         </div>
                     </div>
                     <div class="accordion-item">
@@ -84,8 +84,8 @@ export class HomeView {
             <div class="footer-container">
                 <div class="footer-about">
                     <div class="footer-logo">
-                        <img src="../assets/img/kominfo.png" alt="Logo Kominfo">
                         <img src="../assets/img/pemkot.png" alt="Logo Pemkot Pekanbaru">
+                        <img src="../assets/img/kominfo.png" alt="Logo Kominfo">
                     </div>
                     <p>Sistem Informasi Magang (SIMAGANG) adalah platform resmi yang dikelola oleh Dinas Komunikasi dan Informatika Kota Pekanbaru untuk memfasilitasi proses administrasi magang.</p>
                 </div>

@@ -16,8 +16,8 @@
             <div class="sidebar-header">
                 <div class="sidebar-logo-container">
                     {{-- Ganti path gambar sesuai struktur folder public Anda --}}
-                    <img src="{{ asset('panel-admin/assets/img/kominfo.png') }}" alt="Logo Kominfo">
                     <img src="{{ asset('panel-admin/assets/img/pemkot.png') }}" alt="Logo Pemkot">
+                    <img src="{{ asset('panel-admin/assets/img/kominfo.png') }}" alt="Logo Kominfo">
                 </div>
                 <h3>SIMAGANG</h3>
             </div>
