@@ -1,0 +1,76 @@
+# Nama alur kerja (workflow) kamu
+name: Deploy Aplikasi SIMAGANG ke Server
+
+# Pemicu (Trigger): Kapan workflow ini harus berjalan?
+on:
+  push:
+    branches:
+      - main  # Ganti ini ke "master" jika branch utamamu adalah "master"
+
+# Pekerjaan (Jobs): Apa yang harus dilakukan?
+jobs:
+  deploy:
+    # Nama pekerjaan (bisa kamu ganti)
+    name: Deploy ke Server Pekanbaru
+    # Runner: Komputer virtual yang akan menjalankan perintah
+    runs-on: ubuntu-latest
+
+    # Langkah-langkah (Steps)
+    steps:
+      # Langkah 1: Download kodemu dari GitHub ke Runner
+      - name: 1. Checkout kode
+        uses: actions/checkout@v4
+
+      # Langkah 2: Siapkan PHP di Runner (untuk Composer)
+      - name: 2. Siapkan PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3.13' # Ganti ini jika servermu pakai versi PHP lain
+          extensions: mbstring, xml, curl, zip, intl # Ekstensi yang umum dibutuhkan
+          tools: composer
+
+      # Langkah 3: Install dependensi Composer (di Runner)
+      - name: 3. Install dependensi Composer
+        run: composer install --optimize-autoloader --no-dev
+
+      # Langkah 4: Siapkan Node.js (untuk Vanilla JS kamu)
+      - name: 4. Siapkan Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22.20.0 # Ganti ke versi Node.js yang kamu pakai
+
+      # Langkah 5: Install & Build Aset JavaScript
+      - name: 5. Build Aset (CSS/JS)
+        run: |
+          npm install
+          npm run build
+      
+      # Langkah 6: Upload semua file (termasuk /vendor dan /public/build) ke Server
+      - name: 6. Upload file ke Server via rsync
+        uses: easingthemes/ssh-deploy@v5.0.0
+        with:
+          SSH_PRIVATE_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          REMOTE_HOST: pkgw.pekanbaru.go.id
+          REMOTE_USER: apimagang
+          REMOTE_PORT: 15032
+          SOURCE: "/"  # Upload semua file dari Runner
+          TARGET: /var/www/magang-api.pekanbaru.go.id/html
+          # Abaikan file/folder ini saat upload (sangat penting!)
+          EXCLUDE: "/.git/, /.github/, /node_modules/"
+
+      # Langkah 7: Jalankan perintah final di Server (Artisan cache, dll)
+      - name: 7. Jalankan perintah Post-Deploy di Server
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: pkgw.pekanbaru.go.id
+          username: apimagang
+          key: ${{ secrets.DEPLOY_SSH_KEY }}
+          port: 15032
+          # Perintah yang dijalankan di server setelah file di-upload
+          script: |
+            cd /var/www/magang-api.pekanbaru.go.id/html
+            php artisan config:cache
+            php artisan route:cache
+            php artisan view:cache
+            php artisan storage:link
+            echo "DEPLOY BERHASIL!"
