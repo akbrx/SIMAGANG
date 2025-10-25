@@ -24,19 +24,9 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-}
-html, body, #app, .page-container, .hero-container {
-    /* Untuk Firefox */
-    scrollbar-width: none;
-    /* Untuk IE/Edge */
+
+    scrollbar-width: none;  
     -ms-overflow-style: none;
-}
-html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-#app::-webkit-scrollbar,
-.page-container::-webkit-scrollbar,
-.hero-container::-webkit-scrollbar {
-    display: none;
 }
 body {
     font-family: 'Poppins', sans-serif;
@@ -47,8 +37,9 @@ body {
         linear-gradient(rgba(0, 123, 255, 0.1) 1px, transparent 1px),
         linear-gradient(90deg, rgba(0, 123, 255, 0.1) 1px, transparent 1px);
     background-size: 50px 50px;
-    animation: grid-pan 30s linear infinite;
+    animation: grid-pan 5s linear infinite;
     overflow-x: hidden;
+    padding-top: 70px;
 }
 
 @keyframes grid-pan {
@@ -128,6 +119,8 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    padding: 20px;
 }
 
 .content-container {
@@ -163,6 +156,7 @@ body {
 
 .button-container {
     display: flex;
+    justify-content: center;
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -268,45 +262,61 @@ body {
 .navbar-links a:hover::after { opacity: 1; transform: translateY(0); }
 
 .hamburger-button {
-    display: none;
+    display: none; /* Sembunyikan di desktop */
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
-    z-index: 1001; 
 }
-.hamburger-button svg { color: #fdfeff; }
 
-.sidebar, .sidebar-overlay {
+.hamburger-button svg {
+    color: #fdfeff; /* Sesuaikan dengan warna teks navbar Anda */
+}
+
+/* Overlay di belakang sidebar */
+.sidebar-overlay {
     position: fixed;
     top: 0;
-    z-index: 998;
-    transition: all 0.4s ease-in-out;
-}
-.sidebar-overlay {
     left: 0;
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    visibility: hidden;
+    z-index: 998;
+    opacity: 0; /* Awalnya transparan */
+    visibility: hidden; /* Awalnya tersembunyi */
+    transition: opacity 0.4s ease, visibility 0.4s ease;
 }
-.sidebar-overlay.is-active { opacity: 1; visibility: visible; }
+.sidebar-overlay.is-active {
+    opacity: 1;
+    visibility: visible;
+}
 
+/* Sidebar itu sendiri */
 .sidebar {
     list-style: none;
     margin: 0;
     padding: 60px 20px;
+    position: fixed;
+    top: 0;
     right: 0;
-    width: 280px;
+    width: 280px; /* Lebar sidebar */
     height: 100vh;
-    background-color: #020a17;
+    background-color: #020a17; /* Warna gelap */
     box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    z-index: 999;
+    
+    /* Awalnya tersembunyi di luar layar kanan */
     transform: translateX(100%);
+    transition: transform 0.4s ease-in-out;
 }
-.sidebar.is-active { transform: translateX(0); }
+.sidebar.is-active {
+    transform: translateX(0); /* Muncul ke posisi normal */
+}
 
-.sidebar li { margin: 25px 0; }
+.sidebar li {
+    margin: 25px 0;
+}
+
 .sidebar-link {
     color: #cbd5e1;
     text-decoration: none;
@@ -314,22 +324,49 @@ body {
     font-weight: 600;
     padding: 10px;
     display: block;
+    transition: color 0.3s ease, background-color 0.3s ease;
     border-radius: 8px;
-    transition: all 0.3s ease;
 }
-.sidebar-link:hover { color: #ffffff; background-color: #334155; }
+.sidebar-link:hover {
+    color: #ffffff;
+    background-color: #334155;
+}
 
-.sidebar-close-item { position: absolute; top: 10px; right: 15px; }
+.sidebar-close-item {
+    position: absolute;
+    top: 1px;
+    right: 35px;
+}
+
 .sidebar-close-button {
     background: none;
     border: none;
     color: #cbd5e1;
-    font-size: 2.5rem;
+    font-size: 2.5rem; /* Ukuran ikon 'x' */
     line-height: 1;
     cursor: pointer;
     transition: all 0.3s ease;
 }
-.sidebar-close-button:hover { color: #ffffff; transform: rotate(90deg); }
+
+.sidebar {
+    display: none; /* Sembunyikan sidebar di desktop */
+}
+.navbar-links {
+    display: flex; /* Tampilkan menu navbar normal di desktop */
+}
+
+/* Aturan untuk layar mobile */
+@media (max-width: 768px) {
+    .navbar-links {
+        display: none; /* Sembunyikan menu navbar normal di mobile */
+    }
+    .hamburger-button {
+        display: block; /* Tampilkan tombol hamburger di mobile */
+    }
+    .sidebar {
+        display: block; /* Tampilkan (tapi di luar layar) sidebar di mobile */
+    }
+}
 
 /* ===================================================================
    5. Section: Cara Kerja (How It Works)
@@ -341,7 +378,7 @@ body {
 .how-it-works h2 {
     font-size: 2.8rem;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin: 0 auto 60px auto;
     color: #ffffff;
     opacity: 0;
     animation: bounce-in-right 1.2s ease-out forwards;
@@ -1152,14 +1189,19 @@ a.note-link {
     margin-bottom: 12px;
 }
 
-.footer-links a {
-    color: #a9a9b3;
-    text-decoration: none;
-    transition: color 0.3s ease;
+.footer-links a.footer-link {
+    color: #a9a9b3; 
+    font-weight: normal;
+    text-decoration: none; 
+    
+    text-transform: none;
+    letter-spacing: normal;
+    padding: 0;
 }
 
-.footer-links a:hover {
+.footer-links a.footer-link:hover {
     color: #007bff;
+    text-decoration: none;
 }
 
 .footer-bottom {

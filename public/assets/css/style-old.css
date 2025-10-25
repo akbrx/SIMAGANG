@@ -244,7 +244,6 @@ body {
 }
 
 /* === CSS UNTUK NAVBAR === */
-
 .navbar {
     position: absolute;
     top: 0;
@@ -254,12 +253,16 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 15px 50px;
+    padding: 10px 50px;
     font-family: 'Roboto Mono', monospace;
-
-    background-color: #000010; 
-    border-bottom: 1px solid #ffffff;
-
+    background-color: #080111;
+    border-bottom: 2px solid #007bff;
+    animation: pulsing-glow 4s ease-in-out infinite;
+}
+@keyframes pulsing-glow {
+    0% { box-shadow: 0 0 15px rgba(0, 123, 255, 0.4); }
+    50% { box-shadow: 0 0 30px rgba(0, 123, 255, 0.7); }
+    100% { box-shadow: 0 0 15px rgba(0, 123, 255, 0.4); }
 }
 
 .navbar-brand {
@@ -273,7 +276,7 @@ body {
 }
 
 .navbar-logo {
-    width: 30px; /* Ukuran logo di navbar */
+    width: 30px;
     height: auto;
 }
 
@@ -285,40 +288,36 @@ body {
     padding: 0;
 }
 
-.navbar-links a {
-    color: #ffffff;
+  a {
+    color: #B0C4DE;
     text-decoration: none;
     font-weight: 600;
-    font-size: 1rem;
-    padding-bottom: 5px;
+    font-size: 0.9rem;
+    padding: 10px 15px;
     position: relative;
+    text-transform: uppercase;
+    letter-spacing: 1px;
     transition: color 0.3s ease;
 }
+.navbar-links a:hover { color: #3498db; }
 
-/* Efek garis bawah saat di-hover */
+/* Efek Bracket Hover */
+.navbar-links a::before,
 .navbar-links a::after {
     content: '';
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 0;
-    height: 2px;
-    background-color: #ffffff;
-    transition: width 0.3s ease;
+    width: 10px;
+    height: 10px;
+    border-style: solid;
+    opacity: 0;
+    transition: all 0.3s ease-in-out;
+    border-color: #3498db; 
 }
+.navbar-links a::before { top: 0; left: 0; border-width: 2px 0 0 2px; transform: translateY(5px); }
+.navbar-links a::after { bottom: 0; right: 0; border-width: 0 2px 2px 0; transform: translateY(-5px); }
+.navbar-links a:hover::before,
+.navbar-links a:hover::after { opacity: 1; transform: translateY(0); }
 
-.navbar-links a:hover {
-    color: #d1d1d1;
-}
-
-.navbar-links a:hover::after {
-    width: 100%;
-}
-
-/* Pusatkan konten utama sedikit ke bawah agar tidak tertutup navbar */
-.content-container {
-    padding-top: 60px;
-}
 
 /* === SECTION CARA KERJA (HOW IT WORKS) === */
 

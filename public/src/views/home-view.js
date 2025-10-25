@@ -100,9 +100,9 @@ export class HomeView {
                 <div class="footer-links">
                     <h4>Tautan Terkait</h4>
                     <ul>
-                        <li><a href="https://www.pekanbaru.go.id/" target="_blank">Website Pemkot Pekanbaru</a></li>
-                        <li><a href="https://diskominfo.pekanbaru.go.id/" target="_blank">Diskominfo Pekanbaru</a></li>
-                        <li><a href="https://www.indonesia.go.id/" target="_blank">Portal Informasi Indonesia</a></li>
+                        <li><a href="https://www.pekanbaru.go.id/" target="_blank" class="footer-link">Website Pemkot Pekanbaru</a></li>
+                        <li><a href="https://diskominfo.pekanbaru.go.id/" target="_blank" class="footer-link">Diskominfo Pekanbaru</a></li>
+                        <li><a href="https://www.indonesia.go.id/" target="_blank" class="footer-link">Portal Informasi Indonesia</a></li>
                     </ul>
                 </div>
             </div>
