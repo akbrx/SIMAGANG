@@ -10,31 +10,31 @@ export const render = () => {
 
         <!-- Statistik Cards -->
         <div class="stats-cards">
-            <div class="card">
-                <div class="card-info">
-                    <span id="total-surat" class="card-value">0</span>
-                    <span class="card-title">Total Surat Masuk</span>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-info">
-                    <span id="pending-surat" class="card-value">0</span>
-                    <span class="card-title">Pending</span>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-info">
-                    <span id="disposisi-surat" class="card-value">0</span>
-                    <span class="card-title">Disposisi</span>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-info">
-                    <span id="selesai-surat" class="card-value">0</span>
-                    <span class="card-title">Selesai</span>
-                </div>
+        <div class="card">
+            <div class="card-info">
+                <span id="total-surat" class="card-value">0</span>
+                <span class="card-title">Total Surat Masuk</span>
             </div>
         </div>
+        <div class="card card--diajukan">
+            <div class="card-info">
+                <span id="pending-surat" class="card-value">0</span>
+                <span class="card-title">Diajukan</span>
+            </div>
+        </div>
+        <div class="card card--disposisi">
+            <div class="card-info">
+                <span id="disposisi-surat" class="card-value">0</span>
+                <span class="card-title">Disposisi</span>
+            </div>
+        </div>
+        <div class="card card--selesai">
+            <div class="card-info">
+                <span id="selesai-surat" class="card-value">0</span>
+                <span class="card-title">Selesai</span>
+            </div>
+        </div>
+    </div>
 
         <!-- Charts Grid -->
         <div class="charts-grid">

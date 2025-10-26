@@ -268,6 +268,7 @@ export function makeDraggable(element) {
 
 document.addEventListener('DOMContentLoaded', () => {
     new App(); 
+    window.pengajuanView = new PengajuanView();
 });
 
 window.showNotification = showNotification;

@@ -11,8 +11,8 @@ export const render = () => {
         <div class="login-form-container">
             <div class="login-form-wrapper">
                 <div class="logo-header">
+                <img src="../assets/img/pemkot.png" alt="Logo Pemkot Pekanbaru">
                     <img src="../assets/img/kominfo.png" alt="Logo Kominfo">
-                    <img src="../assets/img/pemkot.png" alt="Logo Pemkot Pekanbaru">
                 </div>
                 <h2>SIMAGANG</h2>
                 <p class="login-info">Selamat Datang Kembali Admin</p>

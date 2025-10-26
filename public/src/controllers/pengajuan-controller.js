@@ -1,7 +1,6 @@
 import { PengajuanView } from "../views/pengajuan-view.js";
 import { PengajuanModel } from "../models/pengajuan-model.js";
 import { showNotification } from "../app.js";
-import { makeDraggable } from '../app.js';
 
 export class PengajuanController {
   constructor() {
@@ -97,18 +96,6 @@ export class PengajuanController {
     document.getElementById("btn-go-home").addEventListener("click", () => {
       window.location.hash = '/';
     });
-
-    const note = document.getElementById('floating-note');
-    const closeNoteBtn = document.getElementById('close-note');
-
-    if (note && closeNoteBtn) {
-        closeNoteBtn.addEventListener('click', () => {
-            note.style.display = 'none';
-        });
-        
-        // Panggil fungsi untuk membuat note bisa digeser
-        makeDraggable(note); 
-    }
 
     // LOGIKA BARU UNTUK TOMBOL COPY
     const copyBtn = document.getElementById("btn-copy-token");

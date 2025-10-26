@@ -915,7 +915,7 @@ body {
 
 .note-header {
     padding: 10px 15px;
-    background-color: rgba(2, 7, 46, 0.7);
+    background-color: rgb(2, 7, 46);
     border-bottom: 1px solid #0D1164;
     cursor: grab;
     display: flex;
@@ -1105,7 +1105,24 @@ a.note-link {
     .sidebar { display: block; }
 
     /* Widget Kontak */
-    .contact-widget { display: none; }
+    .contact-widget {
+        display: block; 
+        
+        bottom: 15px;
+        right: 15px;
+    }
+
+    .contact-fab {
+        width: 50px;
+        height: 50px;
+        box-shadow: 0 3px 10px rgba(0, 123, 255, 0.3); 
+    }
+
+    .contact-popup {
+        width: calc(100vw - 40px); 
+        max-width: 300px;
+        bottom: 70px;
+    }
 
     /* Tipografi */
     .content-container h1 { font-size: 2.2rem; }
@@ -1125,6 +1142,33 @@ a.note-link {
     .procedure-timeline { flex-direction: column; align-items: center; gap: 40px; }
     .procedure-timeline::before { display: none; }
     .timeline-step { width: 80%; }
+    .success-container {
+        padding: 40px 20px; /* Kurangi padding container */
+    }
+
+    .success-container h1 {
+        font-size: 1.8rem; /* Kecilkan judul */
+    }
+
+    .tracking-id-wrapper {
+        padding: 5px 5px 5px 15px; /* Sesuaikan padding token */
+    }
+
+    #tracking-id-text {
+        font-size: 1.2rem; /* Kecilkan font token */
+    }
+
+    /* Tata ulang tombol agar ke bawah */
+    .success-actions {
+        flex-direction: column; /* Ubah jadi tumpukan vertikal */
+        gap: 15px; /* Kurangi jarak antar tombol */
+    }
+
+    /* Kecilkan ukuran tombol di halaman sukses */
+    .success-actions .btn {
+        padding: 12px 25px; /* Kurangi padding tombol */
+        font-size: 1rem; /* Kecilkan font tombol */
+    }
 }
 
 @media (max-width: 600px) {

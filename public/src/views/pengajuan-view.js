@@ -94,7 +94,7 @@ export class PengajuanView {
                 <div class="success-icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                 </div>
-                <h1>Informasi Pengajuan</h1>
+                <h1>SELESAI!</h1>
                 <p>${message}</p>
                 
                 <div class="tracking-id-wrapper">
@@ -103,20 +103,6 @@ export class PengajuanView {
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                     </button>
                 </div>
-                <div id="floating-note" class="floating-note">
-                <div class="note-header">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="note-icon">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <line x1="12" y1="16" x2="12" y2="12"></line>
-                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                    </svg>
-                    <span class="note-title">Penting! Harap Simpan ID Anda</span>
-                    <button id="close-note" class="close-button" aria-label="Tutup">&times;</button>
-                </div>
-                <div class="note-body">
-                    <p>ID Pelacakan Anda bersifat <strong>rahasia</strong>. Jangan bagikan kepada siapa pun dan simpan di tempat yang aman.</p>
-                </div>
-            </div>
                 <div class="success-actions">
                     <button id="btn-track-now" class="btn btn-primary">Lacak Status Sekarang</button>
                     <button id="btn-go-home" class="btn btn-secondary">Kembali ke Home</button>
