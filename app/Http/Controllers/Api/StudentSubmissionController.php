@@ -149,7 +149,7 @@ class StudentSubmissionController extends Controller
         $student->save();
 
         $frontendUrl = env('FRONTEND_URL', 'http://127.0.0.1:3000');
-        $redirectUrl = $frontendUrl . '/#/lupa-id?token=' . $token;
+        $redirectUrl = $frontendUrl . '/#lupa-id?token=' . $token;
 
         return redirect()->away($redirectUrl);
     }
