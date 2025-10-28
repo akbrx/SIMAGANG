@@ -161,17 +161,28 @@ body {
     flex-wrap: wrap;
 }
 
-.typing-animation {
-    display: inline-block;
-    overflow: hidden;
-    white-space: nowrap;
-    width: 0;
-    vertical-align: bottom;
-    animation: typing 2s steps(25, end) forwards;
+.typing-animation-h1,
+.typing-animation-h2 {
+    overflow: hidden; /* Sembunyikan teks yang belum muncul */
+    white-space: nowrap; /* Jaga teks tetap dalam satu baris */
+    width: 0; /* Mulai dari lebar 0, disembunyikan */
+    margin-bottom: 20px; /* Jarak antar h1 dan h2 */
+    opacity: 1; /* Pastikan terlihat setelah animasi */
 }
-@keyframes typing {
-    from { width: 0; }
-    to { width: 25ch; }
+
+/* Animasi untuk H1 */
+.typing-animation-h1 {
+    font-size: 3.5rem;
+    font-weight: 700;
+    text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    animation: typing-h1 2s steps(25, end) forwards;
+}
+
+
+
+/* Animasi mengetik untuk H1 */
+@keyframes typing-h1 {
+    to { width: 25ch; } /* Lebar target akhir untuk H1 */
 }
 
 .content-container h2 {
