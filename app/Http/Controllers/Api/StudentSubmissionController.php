@@ -148,8 +148,8 @@ class StudentSubmissionController extends Controller
         $student->portal_token_expires_at = now()->addMinutes(5);
         $student->save();
 
-        $frontendUrl = env('FRONTEND_URL', 'http://127.0.0.1:3000');
-        $redirectUrl = $frontendUrl . '/#/lupa-id?token=' . $token;
+        $frontendUrl = env('FRONTEND_URL', 'https://magang.pekanbaru.go.id/');
+        $redirectUrl = $frontendUrl . '/#lupa-id?token=' . $token;
 
         return redirect()->away($redirectUrl);
     }
