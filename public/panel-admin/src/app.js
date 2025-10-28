@@ -84,19 +84,21 @@ async function router() { // Jadikan router async
     // Cek token, jika tidak ada dan bukan di halaman login, paksa ke login
     const token = localStorage.getItem('authToken');
     const isLoginPage = window.location.hash === '#login' || window.location.hash === '';
+    const isResetPage = window.location.hash.startsWith('#reset-password');
     
-    if (!token && !isLoginPage) {
+    if (!token && !isLoginPage && !isResetPage) {
         window.location.hash = '#login';
         return; // Hentikan eksekusi router lebih lanjut
     }
     
     // Jika ada token dan user mencoba akses login, arahkan ke dashboard
-    if (token && isLoginPage) {
-         window.location.hash = '#dashboard';
-         return;
+    if (token && (isLoginPage || isResetPage)) {
+        window.location.hash = '#dashboard';
     }
 
-    const path = window.location.hash || (token ? '#dashboard' : '#login'); // Default ke dashboard jika login, jika tidak ke login
+    let path = window.location.hash.split('?')[0] || (token ? '#dashboard' : '#login');
+    if (path === '') path = token ? '#dashboard' : '#login';
+
     const appContainer = document.getElementById('app');
     const appWrapper = document.getElementById('app-wrapper');
 
@@ -107,18 +109,21 @@ async function router() { // Jadikan router async
     if (route) {
         if (path === '#login') {
             appWrapper.classList.add('login-layout');
+            appWrapper.classList.remove('sidebar-is-open');
         } else {
             appWrapper.classList.remove('login-layout');
             updateAdminProfile(); 
         }
 
         appContainer.innerHTML = route.view.render();
-        // Menggunakan await karena init controller bisa jadi async
         if (route.controller && typeof route.controller.init === 'function') {
-           await route.controller.init(); // Tunggu init selesai
+           await route.controller.init();
+        }
+        const isMobile = window.innerWidth <= 992; 
+        if (isMobile && appWrapper.classList.contains('sidebar-is-open')) {
+            appWrapper.classList.remove('sidebar-is-open');
         }
     } else {
-        // Jika hash tidak dikenali, arahkan ke dashboard (jika sudah login)
         window.location.hash = token ? '#dashboard' : '#login';
     }
 }       
@@ -136,6 +141,7 @@ function initAppLayout() {
 
     const sidebarToggleBtn = document.getElementById('sidebar-toggle');
     const appWrapper = document.getElementById('app-wrapper');
+    const mainContent = document.getElementById('main-content');
 
     if (sidebarToggleBtn && appWrapper) {
         if (window.innerWidth > 992) {
@@ -144,15 +150,26 @@ function initAppLayout() {
         sidebarToggleBtn.addEventListener('click', () => {
             appWrapper.classList.toggle('sidebar-is-open');
         });
+        if (mainContent) {
+            mainContent.addEventListener('click', (event) => {
+                const isMobile = window.innerWidth <= 992;
+                // Cek jika sidebar terbuka, layar mobile, dan klik BUKAN pada tombol toggle
+                if (isMobile && appWrapper.classList.contains('sidebar-is-open') && !sidebarToggleBtn.contains(event.target)) {
+                    appWrapper.classList.remove('sidebar-is-open');
+                }
+            });
+        }
     }
 }
 
 // Fungsi untuk menampilkan notifikasi toast (tetap sama)
-window.showToast = function(message, type = 'success', duration = 3000) { /* ... kode toast ... */ };
+window.showToast = function(message, type = 'success', duration = 3000) { 
+
+};
 
 // --- EVENT LISTENERS ---
 window.addEventListener('hashchange', router);
 window.addEventListener('DOMContentLoaded', () => {
     initAppLayout();
-    router(); // Panggil router setelah layout diinisialisasi
+    router(); 
 });
