@@ -12,8 +12,8 @@ export class HomeController {
     showHomePage() {
         this.homeView.render();
         this.homeView.bindButtons(
-            () => window.location.hash = '#/pengajuan',
-            () => window.location.hash = '#/lacak'
+            () => window.location.hash = '#pengajuan',
+            () => window.location.hash = '#lacak'
         );
         this.setupAccordion();
         // PEMANGGILAN setupNavLinks() SUDAH DIHAPUS
@@ -37,7 +37,7 @@ export class HomeController {
         if (lupaIdLinkFaq) {
             lupaIdLinkFaq.addEventListener("click", (event) => {
                 event.preventDefault();
-                window.location.hash = "/lupa-id";
+                window.location.hash = "lupa-id";
             });
         }
     }

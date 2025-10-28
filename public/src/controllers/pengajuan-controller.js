@@ -89,12 +89,12 @@ export class PengajuanController {
   setupSuccessPageListeners(trackingId) {
     // Tombol Lacak Sekarang
     document.getElementById("btn-track-now").addEventListener("click", () => {
-      window.location.hash = `/lacak?id=${trackingId}`;
+      window.location.hash = `lacak?id=${trackingId}`;
     });
 
     // Tombol Kembali ke Home
     document.getElementById("btn-go-home").addEventListener("click", () => {
-      window.location.hash = '/';
+      window.location.hash = 'beranda';
     });
 
     // LOGIKA BARU UNTUK TOMBOL COPY
