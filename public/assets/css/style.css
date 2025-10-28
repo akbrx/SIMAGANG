@@ -707,6 +707,62 @@ body {
     background-color: #475569;
 }
 
+/* === CSS UNTUK DAFTAR SUBMISSION (DI HALAMAN LUPA ID) === */
+
+.submission-list-container {
+    margin-top: 40px;
+    text-align: left;
+}
+
+.submission-list-container h3 {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    color: #ffffff;
+}
+
+.submission-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    text-decoration: none;
+    color: #ffffff;
+    transition: all 0.3s ease;
+}
+
+.submission-card:hover {
+    transform: translateY(-5px);
+    border-color: #007bff;
+}
+
+.submission-token {
+    font-family: 'Roboto Mono', monospace;
+    font-weight: 600;
+}
+
+.submission-date {
+    color: #a9a9b3;
+    font-size: 0.9rem;
+}
+
+.submission-status {
+    font-weight: 700;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+}
+
+/* Warna untuk setiap status */
+.status-disposisi { background-color: rgba(0, 123, 255, 0.2); color: #3498db; }
+.status-diterima { background-color: rgba(46, 213, 115, 0.2); color: #2ed573; }
+.status-ditolak { background-color: rgba(255, 107, 107, 0.2); color: #ff6b6b; }
+
+
+
 /* ===================================================================
    8. Tampilan Hasil Pelacakan (Kartu Detail, Status, Timeline)
    =================================================================== */

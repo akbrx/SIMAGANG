@@ -40,7 +40,7 @@ export class LupaIdView {
         let html = '<h3>Pengajuan Ditemukan:</h3>';
         submissions.forEach(sub => {
             html += `
-                <a href="/#/lacak?id=${sub.unique_token}" class="submission-card">
+                <a href="/#lacak?id=${sub.unique_token}" class="submission-card">
                     <span class="submission-token">ID: ${sub.unique_token}</span>
                     <span class="submission-status status-${sub.status.toLowerCase()}">${sub.status}</span>
                     <span class="submission-date">Diajukan: ${sub.created_at}</span>

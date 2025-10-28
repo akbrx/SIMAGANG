@@ -7,7 +7,7 @@ Route::get('/', function () {
     return view('app'); // 'app' adalah nama file app.blade.php
 });
 
-Route::get('/admin', function () {
+Route::get('/admin/', function () {
     return view('admin');
 });
 

@@ -32,21 +32,21 @@ export class App {
     }
 
     handleRouteChange() {
-    const hash = window.location.hash.slice(1) || '/';
+    const hash = window.location.hash.slice(1) || 'beranda';
     const [path, queryString] = hash.split('?');
     const params = new URLSearchParams(queryString || '');
 
     switch (path) {
-        case '/pengajuan':
+        case 'pengajuan':
             this.pengajuanController.showPengajuanPage();
             break;
-        case '/lacak':
+        case 'lacak':
             this.lacakController.showLacakPage(params.get('id'));
             break;
-        case '/lupa-id':
+        case 'lupa-id':
             this.lupaIdController.showLupaIdPage(Object.fromEntries(params));
             break;
-        case '/':
+        case 'beranda':
             this.homeController.showHomePage();
         
             if (this.scrollTarget) {
@@ -133,16 +133,16 @@ export class App {
 
     // Fungsi untuk klik navbar: tampilkan home, lalu scroll
     navigateToHomeAndScroll(targetId) {
-        const currentPath = window.location.hash.slice(1).split('?')[0] || '/';
+        const currentPath = window.location.hash.slice(1).split('?')[0] || 'beranda';
 
         // Jika kita sudah di halaman utama
-        if (currentPath === '/') {
+        if (currentPath === 'beranda') {
             const element = document.querySelector(targetId);
             if (element) element.scrollIntoView({ behavior: 'smooth' });
         } else {
             // Jika kita di halaman lain
             this.scrollTarget = targetId;
-            window.location.hash = '/';
+            window.location.hash = 'beranda';
         }
     }   
 
