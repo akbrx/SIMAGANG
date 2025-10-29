@@ -50,6 +50,10 @@ Route::prefix('admin')->group(function () {
     // Rute Otentikasi (PUBLIC)
     Route::post('login', [AuthController::class, 'login']); 
 
+    // RUTE LUPA PASSWORD (PUBLIC)
+    Route::post('forgot-password', [AuthController::class, 'forgotPassword']);
+    Route::post('reset-password', [AuthController::class, 'resetPassword']);
+
     // Rute yang WAJIB MENGGUNAKAN TOKEN (Dilindungi oleh Sanctum)
     Route::middleware('auth:sanctum')->group(function () {
         

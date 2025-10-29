@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Submission;
 use Laravel\Sanctum\HasApiTokens;
-
+use Illuminate\Auth\Passwords\CanResetPassword;
+use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
+use App\Notifications\AdminResetPasswordNotification;
 class Administrator extends Authenticatable
 {
-    use HasApiTokens, HasFactory;
+    use HasApiTokens, HasFactory, CanResetPassword;
 
     // Nama tabel di database
     protected $table = 'administrators'; 
@@ -41,5 +43,16 @@ class Administrator extends Authenticatable
     {
         // processed_by adalah foreign key di tabel submissions yang menunjuk ke admin
         return $this->hasMany(Submission::class, 'processed_by');
+    }
+
+    /**
+     * Kirim notifikasi reset password kustom (override).
+     *
+     * @param  string  $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new AdminResetPasswordNotification($token, $this->email));
     }
 }
