@@ -89,16 +89,16 @@ export function renderCards(container, submissions) {
         const noHp = sub.student?.nomor_telepon ?? 'N/A';
 
         return `
-            <div class="card-surat" data-id="${sub.id}">
+            <div class="card-surat">
                 <div class="card-header-surat">
                     <h3 class="student-name">${studentName}</h3>
                 </div>
                 <div class="card-body-surat">
                     <div class="info-item">
                         <span class="label">Status</span>
-                        <span class="value">
-                            <span class="status-badge ${getStatusClass(sub.status)}">${sub.status}</span>
-                        </span>
+                        <button class="status-badge-button ${getStatusClass(sub.status)}" data-id="${sub.id}" data-current-status="${sub.status}">
+                            ${sub.status} <i class="fas fa-caret-down status-caret"></i>
+                        </button>
                     </div>
                     <div class="info-item">
                         <span class="label">Diajukan pada</span>
@@ -108,6 +108,15 @@ export function renderCards(container, submissions) {
                         <span class="label">Nomor Handphone</span>
                         <span class="value">${noHp}</span>
                     </div>
+                     <div class="info-item file-info">
+                         <span class="label">Surat Permohonan</span>
+                        <a href="#" class="file-link" data-id="${sub.id}">
+                            <i class="fas fa-file-pdf icon-pdf"></i> ${sub.original_filename || 'Lihat File'}
+                        </a>
+                    </div>
+                </div>
+                <div class="card-actions">
+                     <button class="btn btn-detail" data-id="${sub.id}">Lihat Detail</button>
                 </div>
             </div>
         `;
@@ -153,16 +162,12 @@ export function renderModalContent(modalBody, modalFooter, submission) {
 
     // Render Footer Modal
     modalFooter.innerHTML = `
-        <button class="btn-danger" id="delete-btn" data-id="${submission.id}">Hapus</button>
-        <div class="modal-actions">
-            <label for="select-status-modal">Ubah Status:</label>
-            <select class="select-status-modal" id="select-status-modal" data-id="${submission.id}">
-                <option value="DIAJUKAN" ${submission.status === 'DIAJUKAN' ? 'selected' : ''}>DIAJUKAN</option>
-                <option value="DISPOSISI" ${submission.status === 'DISPOSISI' ? 'selected' : ''}>DISPOSISI</option>
-                <option value="DITERIMA" ${submission.status === 'DITERIMA' ? 'selected' : ''}>DITERIMA</option>
-                <option value="DITOLAK" ${submission.status === 'DITOLAK' ? 'selected' : ''}>DITOLAK</option>
-            </select>
-        </div>
+        <button class="btn-danger" id="delete-btn" data-id="${submission.id}">
+             <i class="fas fa-trash-alt"></i> Hapus
+        </button>
+        <button class="btn btn-primary" id="reply-btn" data-id="${submission.id}" data-email="${student.email ?? ''}">
+             <i class="fas fa-paper-plane"></i> Kirim Balasan
+        </button>
     `;
 }
 

@@ -430,20 +430,108 @@ body {
 .info-item .value { font-weight: 500; color: #343a40; }
 
 /* Badge Status */
-.status-badge {
-    padding: 5px 12px;
-    border-radius: 9999px;
-    font-size: 0.8rem;
+.status-badge-button {
+    /* Reset tampilan tombol default */
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font: inherit; /* Gunakan font dari parent */
+    text-align: left; /* Sesuaikan jika perlu */
+
+    /* Terapkan gaya badge */
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
     font-weight: 600;
+    color: #fff;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    display: inline-block;
+    cursor: pointer;
+    display: inline-flex; /* Agar ikon panah sejajar */
+    align-items: center;
+    gap: 5px; /* Jarak antara teks dan panah */
+    transition: filter 0.2s; /* Efek hover */
 }
-.status-badge.status-approved { background-color: #d1fae5; color: #065f46; } /* DITERIMA */
-.status-badge.status-rejected { background-color: #fee2e2; color: #991b1b; } /* DITOLAK */
-.status-badge.status-disposition { background-color: #fef3c7; color: #92400e; } /* DISPOSISI */
-.status-badge.status-submitted { background-color: #dbeafe; color: #1e40af; } /* DIAJUKAN */
+.status-badge-button:hover {
+    filter: brightness(0.9); /* Sedikit redup saat hover */
+}
+/* Warna background badge (tetap sama) */
+.status-submitted, .status-diajukan { background-color: #ffc107; color: #212529; }
+.status-disposition, .status-disposisi { background-color: #17a2b8; color: #fff;}
+.status-approved, .status-diterima { background-color: #28a745; color: #fff;}
+.status-rejected, .status-ditolak { background-color: #dc3545; color: #fff;}
 
+/* Ikon panah kecil di badge */
+.status-caret {
+    font-size: 0.7em;
+}
+
+/* --- Link File --- */
+.file-link { /* Gaya link file tidak berubah */ }
+.icon-pdf { color: #dc3545; } /* Warna ikon PDF */
+
+/* --- [PERUBAHAN] Card Actions --- */
+.card-actions {
+    padding: 15px 20px;
+    background-color: #f9fafb;
+    border-top: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: flex-end; /* Dorong tombol Detail ke kanan */
+}
+/* Tombol Detail (hanya untuk membuka modal) */
+.btn-detail {
+    padding: 8px 18px;
+    border: 1px solid #dee2e6;
+    background-color: #fff;
+    color: #495057;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: background-color 0.2s, color 0.2s;
+}
+.btn-detail:hover {
+    background-color: #e9ecef;
+}
+
+/* --- [BARU] Menu Pop-up Status --- */
+.status-menu-popup {
+    position: absolute;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+    z-index: 1050; /* Di atas kartu, di bawah modal */
+    padding: 5px 0;
+    display: none; /* Sembunyi secara default */
+    min-width: 150px;
+}
+.status-menu-popup.show {
+    display: block;
+    animation: popup-fade-in 0.2s ease-out;
+}
+.status-menu-option {
+    display: block;
+    width: 100%;
+    padding: 10px 15px;
+    border: none;
+    background: none;
+    text-align: left;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    font-size: 0.9rem;
+    color: #495057;
+}
+.status-menu-option:hover {
+    background-color: #f0f4ff;
+    color: #2c5ae9;
+}
+.status-menu-option:disabled {
+    color: #adb5bd;
+    cursor: default;
+    background-color: transparent;
+}
+@keyframes popup-fade-in { from { opacity: 0; transform: translateY(-5px); } to { opacity: 1; transform: translateY(0); } }
 
 /* ===================================================================
    8. HALAMAN PENGATURAN
@@ -627,12 +715,33 @@ body {
     color: #aaa;
 }
 .modal-footer {
-    padding: 10px 25px;
+    padding: 15px 25px; /* Padding lebih kecil */
     border-top: 1px solid #e9ecef;
+    background-color: #f9fafb;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 15px;
+    border-radius: 0 0 15px 15px;
 }
+.modal-footer .btn-primary {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    background-color: #2c5ae9;
+    color: #fff;
+    transition: background-color 0.2s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+.modal-footer .btn-primary:hover {
+    background-color: #1c3e91;
+}
+
 .modal-actions { display: flex; gap: 15px; align-items: center; }
 
 /* Detail Grid di Modal Surat */

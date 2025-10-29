@@ -34,6 +34,8 @@ function showToast(message, type = 'success') {
     }, 4000);
 }
 
+const STATUS_OPTIONS = ['DIAJUKAN', 'DISPOSISI', 'DITERIMA', 'DITOLAK'];
+
 export async function init() {
     const cardGrid = document.getElementById('cardGrid');
     const detailModal = document.getElementById('detailModal');
@@ -43,8 +45,10 @@ export async function init() {
     const monthFilter = document.getElementById('month-filter');
     const yearFilter = document.getElementById('year-filter');
     const resetFilterBtn = document.getElementById('reset-filter-btn');
+    const statusMenuPopup = document.getElementById('status-menu-popup');
     
     let allSubmissions = [];
+    let activeStatusMenu = null;
 
     // [IMPLEMENTASI LENGKAP] Fungsi untuk menerapkan filter dan me-render ulang kartu
     function applyFiltersAndRender() {
@@ -76,6 +80,77 @@ export async function init() {
         });
     }
 
+    // [BARU] Fungsi untuk menampilkan menu pop-up status
+    function showStatusMenu(buttonElement) {
+        const submissionId = buttonElement.dataset.id;
+        const currentStatus = buttonElement.dataset.currentStatus;
+        const rect = buttonElement.getBoundingClientRect(); // Posisi tombol badge
+
+        statusMenuPopup.innerHTML = ''; 
+        STATUS_OPTIONS.forEach(status => {
+            const option = document.createElement('button');
+            option.textContent = status;
+            option.className = 'status-menu-option';
+            if (status === currentStatus) {
+                option.disabled = true; 
+            }
+            option.addEventListener('click', async () => {
+                await handleStatusUpdate(submissionId, status);
+                hideStatusMenu();
+            });
+            statusMenuPopup.appendChild(option);
+        });
+
+        // Posisikan menu di bawah tombol badge
+        statusMenuPopup.style.top = `${rect.bottom + window.scrollY + 5}px`;
+        statusMenuPopup.style.left = `${rect.left + window.scrollX}px`;
+        statusMenuPopup.classList.add('show');
+        activeStatusMenu = statusMenuPopup; // Tandai menu ini sebagai aktif
+
+        // Tambahkan event listener untuk menutup menu saat klik di luar
+        // Gunakan setTimeout agar listener ini tidak langsung aktif oleh klik yang membuka menu
+        setTimeout(() => {
+            document.addEventListener('click', handleClickOutsideMenu, { once: true });
+        }, 0);
+    }
+
+    // [BARU] Fungsi untuk menyembunyikan menu pop-up status
+    function hideStatusMenu() {
+        if (activeStatusMenu) {
+            activeStatusMenu.classList.remove('show');
+            activeStatusMenu = null;
+            document.removeEventListener('click', handleClickOutsideMenu);
+        }
+    }
+
+    // [BARU] Handler untuk menutup menu saat klik di luar
+    function handleClickOutsideMenu(event) {
+        if (activeStatusMenu && !activeStatusMenu.contains(event.target) && !event.target.closest('.status-badge-button')) {
+            hideStatusMenu();
+        } else {
+             // Jika klik masih di area menu atau tombol badge lain, pasang lagi listener
+             // (diperlukan jika user klik tombol badge lain saat menu terbuka)
+            document.addEventListener('click', handleClickOutsideMenu, { once: true });
+        }
+    }
+
+    // [BARU] Fungsi terpisah untuk menangani logika update status
+    async function handleStatusUpdate(submissionId, newStatus) {
+         try {
+            showToast('Memperbarui status...', 'info');
+            const updatedSubmission = await suratModel.updateSubmissionStatus(submissionId, newStatus);
+            const index = allSubmissions.findIndex(s => s.id == submissionId);
+            if (index !== -1) {
+                allSubmissions[index] = updatedSubmission;
+            }
+            applyFiltersAndRender();
+            showToast('Status berhasil diperbarui!');
+        } catch (error) {
+            showToast(`Gagal: ${error.message}`, 'error');
+        }
+    }
+
+    // --- Ambil Data Awal ---
     try {
         cardGrid.innerHTML = `<p class="info-message">Memuat data surat...</p>`;
         allSubmissions = await suratModel.getAllSubmissions();
@@ -98,10 +173,38 @@ export async function init() {
         showToast('Filter telah direset', 'info');
     });
 
-    cardGrid.addEventListener('click', (event) => {
-        const card = event.target.closest('.card-surat');
-        if (card) {
-            const submissionId = card.dataset.id;
+    // [PERUBAHAN] Event listener utama pada grid kartu
+    cardGrid.addEventListener('click', async (event) => {
+        const statusButton = event.target.closest('.status-badge-button');
+        const detailButton = event.target.closest('.btn-detail');
+        const fileLink = event.target.closest('.file-link');
+
+        // 1. Klik pada Tombol Status
+        if (statusButton) {
+            event.stopPropagation(); // Hentikan event agar tidak membuka modal
+            // Jika ada menu lain terbuka, tutup dulu
+            if (activeStatusMenu && !statusMenuPopup.contains(event.target)) {
+                 hideStatusMenu();
+            }
+            showStatusMenu(statusButton);
+            return; // Hentikan proses lebih lanjut
+        }
+
+        // 2. Klik pada Link File di Kartu
+        if (fileLink) {
+            event.preventDefault();
+            const submissionId = fileLink.dataset.id;
+            try {
+                showToast('Mendapatkan link file...', 'info');
+                const fileUrl = await suratModel.getProtectedFileUrl(submissionId);
+                window.open(fileUrl, '_blank');
+            } catch (error) { showToast(error.message, 'error'); }
+            return; // Hentikan proses
+        }
+
+        // 3. Klik pada Tombol Detail (atau area kartu lain jika ingin seluruh kartu bisa diklik)
+        if (detailButton) {
+            const submissionId = detailButton.dataset.id;
             const submission = allSubmissions.find(s => s.id == submissionId);
             renderModalContent(modalBody, modalFooter, submission);
             detailModal.classList.add('show');

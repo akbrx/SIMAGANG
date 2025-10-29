@@ -30,7 +30,6 @@
             <ul class="sidebar-menu">
                 <li><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="#surat"><i class="fas fa-envelope"></i> Surat</a></li>
-                {{-- [BARU] Menambahkan link Pengaturan --}}
                 <li><a href="#pengaturan"><i class="fas fa-cog"></i> Pengaturan</a></li>
             </ul>
 
@@ -67,6 +66,8 @@
             </div>
         </div>
     </div>
+
+    <div id="status-menu-popup" class="status-menu-popup"></div>
     
     <!-- Container untuk notifikasi Toast -->
     <div id="toast-container"></div>
