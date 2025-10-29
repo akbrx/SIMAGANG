@@ -72,7 +72,7 @@ export const init = () => {
     if(forgotPasswordLink) {
         forgotPasswordLink.addEventListener('click', (e) => {
             e.preventDefault();
-            alert('Fitur "Lupa Password" sedang dalam pengembangan.');
+            window.location.hash = '#forgot-password'; 
         });
     }
 };

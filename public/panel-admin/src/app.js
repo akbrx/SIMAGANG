@@ -11,6 +11,8 @@ import * as settingsView from './views/settings-view.js';
 import * as settingsController from './controllers/settings-controller.js';
 import * as resetPasswordView from './views/reset-password-view.js';
 import * as resetPasswordController from './controllers/reset-password-controller.js';
+import * as forgotPasswordView from './views/forgot-password-view.js';
+import * as forgotPasswordController from './controllers/forgot-password-controller.js';
 
 
 export function showConfirmation(title, message, confirmText = 'Ya') {
@@ -54,7 +56,8 @@ const routes = {
     '#dashboard': { view: dashboardView, controller: dashboardController },
     '#surat': { view: suratView, controller: suratController },
     '#pengaturan': { view: settingsView, controller: settingsController },
-    '#reset-password': { view: resetPasswordView, controller: resetPasswordController }
+    '#reset-password': { view: resetPasswordView, controller: resetPasswordController },
+    '#forgot-password': { view: forgotPasswordView, controller: forgotPasswordController }
 };
 
 // Fungsi untuk menangani status aktif pada menu sidebar
@@ -80,20 +83,21 @@ function updateAdminProfile() {
     }
 }
 
-async function router() { // Jadikan router async
-    // Cek token, jika tidak ada dan bukan di halaman login, paksa ke login
+async function router() { 
+
+    const currentHash = window.location.hash;
+
     const token = localStorage.getItem('authToken');
     const isLoginPage = window.location.hash === '#login' || window.location.hash === '';
     const isResetPage = window.location.hash.startsWith('#reset-password');
+    const isForgotPage = currentHash === '#forgot-password';
     
-    if (!token && !isLoginPage && !isResetPage) {
+    if (!token && !isLoginPage && !isResetPage && !isForgotPage) {
         window.location.hash = '#login';
-        return; // Hentikan eksekusi router lebih lanjut
+        return; 
     }
-    
-    // Jika ada token dan user mencoba akses login, arahkan ke dashboard
-    if (token && (isLoginPage || isResetPage)) {
-        window.location.hash = '#dashboard';
+    if (token && (isLoginPage || isResetPage || isForgotPage)) {
+        if(!isResetPage && !isForgotPage) window.location.hash = '#dashboard';
     }
 
     let path = window.location.hash.split('?')[0] || (token ? '#dashboard' : '#login');
@@ -102,17 +106,21 @@ async function router() { // Jadikan router async
     const appContainer = document.getElementById('app');
     const appWrapper = document.getElementById('app-wrapper');
 
-    handleActiveMenu(path);
+    if (!isLoginPage && !isResetPage && !isForgotPage) {
+        handleActiveMenu(path);
+    } else {
+         document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
+    }
 
     const route = routes[path];
 
     if (route) {
-        if (path === '#login') {
+        if (path === '#login' || path === '#reset-password' || path === '#forgot-password') {
             appWrapper.classList.add('login-layout');
             appWrapper.classList.remove('sidebar-is-open');
         } else {
             appWrapper.classList.remove('login-layout');
-            updateAdminProfile(); 
+            updateAdminProfile();
         }
 
         appContainer.innerHTML = route.view.render();

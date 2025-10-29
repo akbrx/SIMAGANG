@@ -731,9 +731,50 @@ body {
 .toast-notification.info { border-left-color: #007bff; }
 .toast-notification.info::before { background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23007bff' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cline x1='12' y1='16' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='8' x2='12.01' y2='8'%3E%3C/line%3E%3C/svg%3E"); }
 
+/* ==========================================================================
+   11. HALAMAN FORGOT & RESET PASSWORD
+   ========================================================================== */
+
+.forgot-password-wrapper .login-form-wrapper h2,
+.reset-password-wrapper .login-form-wrapper h2 {
+    font-size: 1.6rem; 
+}
+
+/* Gaya untuk pesan sukses */
+.success-message {
+    color: #0f5132; 
+    background-color: #d1e7dd; 
+    border: 1px solid #badbcc;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-top: 15px;
+    font-size: 0.9rem;
+}
+
+/* Link Kembali ke Login */
+.back-to-login {
+    margin-top: 25px;
+    text-align: center;
+}
+.back-to-login a {
+    color: #d1d1d1;
+    font-size: 0.9rem;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+.back-to-login a:hover {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
+/* Memastikan error message juga punya text-align */
+.forgot-password-wrapper .error-message,
+.reset-password-wrapper .error-message {
+    text-align: center;
+}
 
 /* ===================================================================
-   11. DESAIN RESPONSIF (MEDIA QUERIES)
+   12. DESAIN RESPONSIF (MEDIA QUERIES)
    =================================================================== */
 /* Tablet & Layar Lebih Kecil */
 @media (max-width: 992px) {
