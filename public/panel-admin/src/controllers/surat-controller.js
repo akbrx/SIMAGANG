@@ -248,6 +248,11 @@ export async function init() {
                 }
             }
         }
+
+        if (event.target.id === 'reply-btn') {
+            console.log( 'Fungsi kirim balasan belum diimplementasikan.');
+        }
+
     });
     
     detailModal.addEventListener('change', async (event) => {

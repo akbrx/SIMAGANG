@@ -737,6 +737,7 @@ body {
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    justify-content: center;
 }
 .modal-footer .btn-primary:hover {
     background-color: #1c3e91;
