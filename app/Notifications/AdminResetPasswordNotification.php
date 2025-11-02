@@ -42,9 +42,6 @@ class AdminResetPasswordNotification extends Notification
 
         return (new MailMessage)
                     ->subject('Notifikasi Reset Password Admin')
-                    ->line('Anda menerima email ini karena kami menerima permintaan reset password untuk akun Anda.')
-                    ->action('Reset Password', $resetUrl) // Tombol akan mengarah ke frontend
-                    ->line('Token ini akan kedaluwarsa dalam 60 menit.')
-                    ->line('Jika Anda tidak meminta reset password, abaikan email ini.');
+                    ->view('emails.admin-reset-password', ['resetUrl' => $resetUrl]);
     }
 }
