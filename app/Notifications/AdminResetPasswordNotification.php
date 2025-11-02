@@ -37,8 +37,10 @@ class AdminResetPasswordNotification extends Notification
     {
         $frontendUrl = env('FRONTEND_URL', 'https://magang.pekanbaru.go.id/');
 
+        $adminBaseUrl = rtrim($frontendUrl, '/') . '/admin';
+
         // Buat URL lengkap untuk reset password di frontend Anda
-        $resetUrl = $frontendUrl . '/#reset-password?token=' . $this->token . '&email=' . $this->email;
+        $resetUrl = $adminBaseUrl . '/#reset-password?token=' . $this->token . '&email=' . $this->email;
 
         return (new MailMessage)
                     ->subject('Notifikasi Reset Password Admin')
