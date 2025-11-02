@@ -89,10 +89,11 @@ class AuthController extends Controller
     /**
      * [Endpoint POST /api/admin/forgot-password]
      * Mengirim link reset password ke email admin.
+     * * VERSI DEBUG: try-catch dihapus agar error terlihat.
      */
     public function forgotPassword(Request $request)
     {
-        // 1. Validasi email
+        // 1. Validasi email (Tetap sama)
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:administrators,email',
         ], [
@@ -103,31 +104,19 @@ class AuthController extends Controller
             return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
         }
 
-        // 2. Kirim link reset menggunakan broker 'administrators'
-        try {
-            $status = Password::broker('administrators')->sendResetLink(
-                $request->only('email')
-            );
+        // 2. KIRIM LINK TANPA TRY-CATCH
+        // Kita ingin ini "meledak" jika gagal
+        $status = Password::broker('administrators')->sendResetLink(
+            $request->only('email')
+        );
 
-            // 3. Beri respon
-            if ($status == Password::RESET_LINK_SENT) {
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Email reset password telah dikirim.'
-                ]);
-            } else {
-                // Harusnya tidak terjadi jika validasi 'exists' berhasil
-                return response()->json([
-                    'success' => false,
-                    'message' => __($status) // Terjemahkan status error dari Laravel
-                ], 400);
-            }
-        } catch (Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal mengirim email: ' . $e->getMessage()
-            ], 500);
-        }
+        // 3. Langsung beri respon berdasarkan status dari Laravel
+        // (Kita tidak lagi berasumsi $status == RESET_LINK_SENT adalah sukses kirim)
+        return response()->json([
+            'success' => true,
+            'message' => 'Status dari broker: ' . $status 
+            // Ini akan memberi tahu kita apa yang sebenarnya dikembalikan oleh Laravel
+        ]);
     }
 
 
