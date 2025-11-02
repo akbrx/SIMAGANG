@@ -15,6 +15,8 @@ import * as forgotPasswordView from './views/forgot-password-view.js';
 import * as forgotPasswordController from './controllers/forgot-password-controller.js';
 import * as replyView from './views/reply-view.js';
 import * as replyController from './controllers/reply-controller.js';
+import * as pembimbingView from './views/pembimbing-view.js';
+import * as pembimbingController from './controllers/pembimbing-controller.js';
 
 
 export function showConfirmation(title, message, confirmText = 'Ya') {
@@ -60,7 +62,8 @@ const routes = {
     '#pengaturan': { view: settingsView, controller: settingsController },
     '#reset-password': { view: resetPasswordView, controller: resetPasswordController },
     '#forgot-password': { view: forgotPasswordView, controller: forgotPasswordController },
-    '#surat-balas': { view: replyView, controller: replyController }
+    '#surat-balas': { view: replyView, controller: replyController },
+    '#pembimbing': { view: pembimbingView, controller: pembimbingController }
 };
 
 // Fungsi untuk menangani status aktif pada menu sidebar
@@ -94,13 +97,15 @@ async function router() {
     const isLoginPage = window.location.hash === '#login' || window.location.hash === '';
     const isResetPage = window.location.hash.startsWith('#reset-password');
     const isForgotPage = currentHash === '#forgot-password';
-    const isPublicPage = isLoginPage || isResetPage || isForgotPage;
+    const isPembimbingPage = currentHash === '#pembimbing';
+
+    const isStandalonePage = isLoginPage || isResetPage || isForgotPage || isPembimbingPage;
     
-    if (!token && !isPublicPage) {
+    if (!token && !isStandalonePage) {
         window.location.hash = '#login';
         return; 
     }
-    if (token && isPublicPage) {
+    if (token && (isLoginPage || isResetPage || isForgotPage)) {
         if(!isResetPage && !isForgotPage) window.location.hash = '#dashboard';
         return;
     }
@@ -111,16 +116,16 @@ async function router() {
     const appContainer = document.getElementById('app');
     const appWrapper = document.getElementById('app-wrapper');
 
-    if (!isLoginPage && !isResetPage && !isForgotPage) {
-        handleActiveMenu(path);
-    } else {
+    if (isStandalonePage || path === '#surat-balas') {
          document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
+    } else {
+         handleActiveMenu(path);
     }
 
     const route = routes[path];
 
     if (route) {
-        if (path === '#login' || path === '#reset-password' || path === '#forgot-password') {
+        if (path === '#login' || path === '#reset-password' || path === '#forgot-password' || path === '#pembimbing') {
             appWrapper.classList.add('login-layout');
             appWrapper.classList.remove('sidebar-is-open');
         } else {

@@ -47,7 +47,7 @@ export function render() {
                     </div>
                     <div class="form-group">
                         <label for="reply-catatan">Catatan Tambahan (Opsional)</label>
-                        <textarea id="reply-catatan" rows="3" placeholder="Pesan tambahan untuk mahasiswa..."></textarea>
+                        <textarea id="reply-catatan" rows="3" placeholder="Pesan tambahan untuk pengaju surat..."></textarea>
                     </div>
 
                     <p id="reply-error-message" class="info-message error small" style="display: none;"></p>

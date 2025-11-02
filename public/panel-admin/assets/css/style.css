@@ -14,6 +14,7 @@
    10. KOMPONEN: NOTIFIKASI TOAST
    11. DESAIN RESPONSIF (MEDIA QUERIES)
    12. HALAMAN BALAS SURAT
+   13. HALAMAN PEMBIMBING
    =================================================================== */
 
 /* ===================================================================
@@ -1136,4 +1137,212 @@ body {
     margin-top: 15px;
     padding: 12px 15px;
     font-size: 0.9rem;
+}
+
+/* ==========================================================================
+   13. HALAMAN PEMBIMBING
+   ========================================================================== */
+
+/* Layout Halaman */
+.pembimbing-page {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.pembimbing-header {
+    background-color: #fff;
+    padding: 20px 25px;
+    border-bottom: 1px solid #e9ecef;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.04);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+.pembimbing-header .header-content h3 {
+    margin: 0 0 5px 0;
+    font-size: 1.5rem;
+    color: #343a40;
+}
+.pembimbing-header .header-content p {
+    margin: 0;
+    color: #6c757d;
+}
+/* Menggunakan kembali gaya .btn-logout dari sidebar */
+.pembimbing-header .btn-logout {
+    flex-shrink: 0;
+    width: auto; /* Menghapus width 100% dari .btn-logout */
+    padding: 8px 15px; /* Padding lebih kecil */
+    font-size: 0.9rem; /* Font lebih kecil */
+    gap: 8px; /* Jarak ikon dan teks lebih kecil */
+}
+
+/* Tombol Tambah FAB (Floating Action Button) */
+.fab {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 60px;
+    height: 60px;
+    background-color: #2c5ae9;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    box-shadow: 0 6px 20px rgba(44, 90, 233, 0.4);
+    cursor: pointer;
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 900;
+    transition: transform 0.2s ease-out, background-color 0.2s;
+}
+.fab:hover {
+    background-color: #1c3e91;
+    transform: scale(1.05);
+}
+
+/* Grid Kartu Catatan (Menggunakan kembali gaya halaman surat) */
+#pembimbing-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 25px;
+    overflow-y: auto;
+    flex-grow: 1;
+    padding: 25px;
+}
+
+/* Kartu Catatan */
+.note-card {
+    background: #fff;
+    border-radius: 12px;
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+.note-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+}
+.note-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #e9ecef;
+    color: #2c5ae9;
+}
+.note-card-header .fa-user-graduate {
+    font-size: 1.2rem;
+}
+.note-card-header .note-student-name {
+    margin: 0;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+.note-card-body {
+    padding: 20px;
+}
+.note-disposition-preview {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    margin-bottom: 15px;
+}
+.note-excerpt {
+    font-size: 0.9rem;
+    color: #6c757d;
+    line-height: 1.6;
+    margin: 0;
+}
+.note-card-footer {
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    text-align: right;
+    font-size: 0.8rem;
+    color: #6c757d;
+    margin-top: auto;
+}
+
+/* Modal Tambah Catatan (Menggunakan gaya form pengaturan) */
+#pembimbing-add-modal .modal-content {
+    max-width: 700px;
+}
+#add-note-form .form-group {
+    margin-bottom: 20px;
+}
+#add-note-form label {
+    display: block;
+    font-weight: 500;
+    color: #495057;
+    margin-bottom: 8px;
+    font-size: 0.9rem;
+}
+#add-note-form input[type="text"],
+#add-note-form input[type="file"],
+#add-note-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 8px;
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    box-sizing: border-box;
+    color: #495057;
+}
+#add-note-form input[type="file"] { padding: 10px; background: #f8f9fa; }
+#add-note-form textarea { resize: vertical; min-height: 120px; }
+#add-note-form small { font-size: 0.85rem; color: #6c757d; margin-top: 5px; display: block;}
+#add-note-form .modal-footer { padding: 0; border: none; background: none; justify-content: flex-end; }
+#add-note-form .btn-primary { /* Menggunakan gaya .btn-save dari pengaturan */
+    padding: 12px 25px; border: none; border-radius: 8px; cursor: pointer;
+    font-weight: 600; background-color: #2c5ae9; color: #fff;
+    display: inline-flex; align-items: center; justify-content: center; min-width: 150px;
+}
+#add-note-form .btn-primary .spinner { display: none; /* ...gaya spinner... */ }
+#add-note-form .btn-primary.loading .spinner { display: block; }
+#add-note-form .btn-primary.loading .btn-text { display: none; }
+
+/* Modal Detail Catatan */
+.detail-note-content {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+.detail-note-content h4 {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 5px;
+}
+.detail-disposition-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: contain;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+.notes-content-box {
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    padding: 15px;
+    min-height: 100px;
+    line-height: 1.6;
+    color: #343a40;
+}
+.detail-timestamp {
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-align: right;
+}
+#pembimbing-detail-modal .modal-footer {
+    justify-content: flex-start; /* Tombol hapus di kiri */
 }
