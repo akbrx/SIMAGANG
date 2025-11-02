@@ -9,9 +9,11 @@ use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
 use App\Notifications\AdminResetPasswordNotification;
+use Illuminate\Notifications\Notifiable;
+
 class Administrator extends Authenticatable implements CanResetPasswordContract
 {
-    use HasApiTokens, HasFactory, CanResetPassword;
+    use HasApiTokens, HasFactory, CanResetPassword, Notifiable;
 
     // Nama tabel di database
     protected $table = 'administrators'; 
