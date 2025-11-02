@@ -13,6 +13,8 @@ import * as resetPasswordView from './views/reset-password-view.js';
 import * as resetPasswordController from './controllers/reset-password-controller.js';
 import * as forgotPasswordView from './views/forgot-password-view.js';
 import * as forgotPasswordController from './controllers/forgot-password-controller.js';
+import * as replyView from './views/reply-view.js';
+import * as replyController from './controllers/reply-controller.js';
 
 
 export function showConfirmation(title, message, confirmText = 'Ya') {
@@ -57,7 +59,8 @@ const routes = {
     '#surat': { view: suratView, controller: suratController },
     '#pengaturan': { view: settingsView, controller: settingsController },
     '#reset-password': { view: resetPasswordView, controller: resetPasswordController },
-    '#forgot-password': { view: forgotPasswordView, controller: forgotPasswordController }
+    '#forgot-password': { view: forgotPasswordView, controller: forgotPasswordController },
+    '#surat-balas': { view: replyView, controller: replyController }
 };
 
 // Fungsi untuk menangani status aktif pada menu sidebar
@@ -86,18 +89,20 @@ function updateAdminProfile() {
 async function router() { 
 
     const currentHash = window.location.hash;
-
     const token = localStorage.getItem('authToken');
+
     const isLoginPage = window.location.hash === '#login' || window.location.hash === '';
     const isResetPage = window.location.hash.startsWith('#reset-password');
     const isForgotPage = currentHash === '#forgot-password';
+    const isPublicPage = isLoginPage || isResetPage || isForgotPage;
     
-    if (!token && !isLoginPage && !isResetPage && !isForgotPage) {
+    if (!token && !isPublicPage) {
         window.location.hash = '#login';
         return; 
     }
-    if (token && (isLoginPage || isResetPage || isForgotPage)) {
+    if (token && isPublicPage) {
         if(!isResetPage && !isForgotPage) window.location.hash = '#dashboard';
+        return;
     }
 
     let path = window.location.hash.split('?')[0] || (token ? '#dashboard' : '#login');

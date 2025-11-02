@@ -250,7 +250,20 @@ export async function init() {
         }
 
         if (event.target.id === 'reply-btn') {
-            console.log( 'Fungsi kirim balasan belum diimplementasikan.');
+            const submissionId = event.target.dataset.id;
+            const submission = allSubmissions.find(s => s.id == submissionId);
+            
+            if (submission) {
+                // Simpan data ke sessionStorage untuk diambil oleh halaman balasan
+                sessionStorage.setItem('replySubmission', JSON.stringify(submission));
+                
+                detailModal.classList.remove('show'); // Tutup modal detail
+                
+                // Navigasi ke halaman kirim balasan
+                window.location.hash = `#surat-balas?id=${submissionId}`;
+            } else {
+                showToast('Gagal menemukan data surat.', 'error');
+            }
         }
 
     });
