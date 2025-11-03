@@ -15,6 +15,7 @@
    11. DESAIN RESPONSIF (MEDIA QUERIES)
    12. HALAMAN BALAS SURAT
    13. HALAMAN PEMBIMBING
+   14. HALAMAN LUPA PASSWORD & RESET PASSWORD
    =================================================================== */
 
 /* ===================================================================
@@ -1342,4 +1343,79 @@ body {
 }
 #pembimbing-detail-modal .modal-footer {
     justify-content: flex-start; /* Tombol hapus di kiri */
+}
+
+/* ==========================================================================
+   14. GAYA HALAMAN LUPA PASSWORD & RESET (BARU)
+   ========================================================================== */
+
+/* Gaya untuk spinner di tombol login */
+.btn-login:disabled { 
+    background-color: #5a7de0; 
+    cursor: not-allowed; 
+}
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #ffffff;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    display: none;
+    
+}
+.btn-login.loading .spinner { display: block; }
+.btn-login.loading .btn-text { display: none; }
+
+/* Didefinisikan di bagian .btn-save, tapi kita tambahkan di sini 
+   jika .btn-login belum punya keyframes spin */
+@keyframes spin { 
+    to { transform: rotate(360deg); } 
+}
+
+/* Memberi jarak untuk pesan sukses/error */
+.success-message {
+    color: #0f5132; 
+    background-color: #d1e7dd; 
+    border: 1px solid #badbcc;
+    padding: 10px 15px;
+    border-radius: 6px;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+}
+.error-message {
+    margin-top: 20px;
+}
+
+/* Link Kembali ke Login di halaman forgot/reset */
+.back-to-login { 
+    margin-top: 25px; 
+    text-align: center; 
+}
+.back-to-login a { 
+    color: #d1d1d1; 
+    font-size: 0.9rem; 
+    text-decoration: none; 
+    transition: color 0.3s; 
+}
+.back-to-login a:hover { 
+    color: #ffffff; 
+    text-decoration: underline; 
+}
+
+/* Wrapper Halaman */
+.forgot-password-wrapper,
+.reset-password-wrapper {
+    /* Menggunakan class .login-wrapper yang sudah ada */
+}
+
+.forgot-password-wrapper .login-form-wrapper h2,
+.reset-password-wrapper .login-form-wrapper h2 {
+    font-size: 1.6rem; 
+}
+
+/* Memastikan error message juga punya text-align */
+.forgot-password-wrapper .error-message,
+.reset-password-wrapper .error-message {
+    text-align: center;
 }

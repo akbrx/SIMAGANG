@@ -28,8 +28,7 @@ async function authenticatedFetch(url, options = {}) {
     } catch (error) { console.error(`Error during fetch ${url}:`, error); throw error; }
 }
 
-// --- GANTI URL ENDPOINT INI SESUAI BACKEND ANDA ---
-const API_BASE_URL = 'http://localhost:8000/api/admin/mentor-notes';
+const API_BASE_URL = '/api/admin/mentor-notes';
 
 /**
  * Mengambil semua catatan untuk pembimbing yang login.

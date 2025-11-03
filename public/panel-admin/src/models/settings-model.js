@@ -22,10 +22,6 @@ async function authenticatedFetch(url, options = {}) {
     } catch (error) { console.error(`Error during fetch ${url}:`, error); throw error; }
 }
 
-// --- [DIHAPUS] Pengaturan Kontak Widget (Fungsi lama dihapus) ---
-// async function getSelectedContactAdminId() { ... }
-// async function updateSelectedContactAdmin(adminId) { ... }
-
 // --- Daftar Administrator ---
 /**
  * Mengambil daftar semua admin (untuk dropdown).
@@ -46,7 +42,6 @@ export async function setPrimaryContactAdmin(adminId) {
     const url = `/api/admin/administrators/${adminId}/set-primary-contact`;
     return await authenticatedFetch(url, {
         method: 'PUT',
-        // Tidak perlu body karena ID sudah ada di URL
     });
 }
 
