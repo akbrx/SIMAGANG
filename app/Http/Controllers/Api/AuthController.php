@@ -88,35 +88,43 @@ class AuthController extends Controller
 
     /**
      * [Endpoint POST /api/admin/forgot-password]
-     * Mengirim link reset password ke email admin.
-     * * VERSI DEBUG: try-catch dihapus agar error terlihat.
+     * Menerima email admin dan mengirimkan link reset password.
      */
     public function forgotPassword(Request $request)
     {
-        // 1. Validasi email (Tetap sama)
+        // 1. Validasi email
         $validator = Validator::make($request->all(), [
             'email' => 'required|email|exists:administrators,email',
         ], [
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
             'email.exists' => 'Email tidak terdaftar sebagai administrator.'
         ]);
 
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            // Jika validasi gagal (email tidak ada), kirim error 422
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
         }
 
-        // 2. KIRIM LINK TANPA TRY-CATCH
-        // Kita ingin ini "meledak" jika gagal
+        // 2. Kirim link reset
         $status = Password::broker('administrators')->sendResetLink(
             $request->only('email')
         );
 
-        // 3. Langsung beri respon berdasarkan status dari Laravel
-        // (Kita tidak lagi berasumsi $status == RESET_LINK_SENT adalah sukses kirim)
-        return response()->json([
-            'success' => true,
-            'message' => 'Status dari broker: ' . $status 
-            // Ini akan memberi tahu kita apa yang sebenarnya dikembalikan oleh Laravel
-        ]);
+        // 3. [PERBAIKAN] Cek status pengiriman email
+        if ($status == Password::RESET_LINK_SENT) {
+            // HANYA jika email berhasil dikirim, kembalikan sukses
+            return response()->json([
+                'success' => true,
+                'message' => 'Link reset password telah dikirim ke email Anda.'
+            ]);
+        } else {
+            // Jika gagal (misal: throttling, server email down)
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengirim link reset. Silakan coba lagi nanti.'
+            ], 500);
+        }
     }
 
 
@@ -130,16 +138,29 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'token' => 'required|string',
             'email' => 'required|email|exists:administrators,email',
-            'password' => 'required|string|min:8|confirmed', // 'confirmed' akan cek 'password_confirmation'
+            // [PERBAIKAN] Sesuaikan nama field dengan frontend
+            'new_password' => 'required|string|min:8|confirmed', 
+        ], [
+            // [PERBAIKAN] Tambahkan pesan error untuk field baru
+            'new_password.required' => 'Password baru wajib diisi.',
+            'new_password.min' => 'Password baru minimal 8 karakter.',
+            'new_password.confirmed' => 'Konfirmasi password baru tidak cocok.',
         ]);
 
+
         if ($validator->fails()) {
-            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+            return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
         }
 
-        // 2. Coba reset password menggunakan broker 'administrators'
+        // 2. Coba reset password
         $status = Password::broker('administrators')->reset(
-            $request->only('email', 'password', 'password_confirmation', 'token'),
+            // [PERBAIKAN] Gunakan field yang benar dari request
+            [
+                'email' => $request->email,
+                'token' => $request->token,
+                'password' => $request->new_password, // Ambil dari 'new_password'
+                'password_confirmation' => $request->new_password_confirmation, // Ambil dari 'new_password_confirmation'
+            ],
             function ($admin, $password) {
                 // Callback ini dijalankan JIKA token dan email valid
                 $admin->password = Hash::make($password);
@@ -151,7 +172,7 @@ class AuthController extends Controller
         if ($status == Password::PASSWORD_RESET) {
             return response()->json([
                 'success' => true,
-                'message' => 'Password berhasil diperbarui. Anda bisa menutup halaman ini.'
+                'message' => 'Password berhasil diperbarui!'
             ]);
         } else {
             // Jika token tidak valid atau kedaluwarsa

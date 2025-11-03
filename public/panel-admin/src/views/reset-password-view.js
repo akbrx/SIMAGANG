@@ -16,7 +16,6 @@ export function render() {
 
                     <form id="reset-password-form">
                         <input type="hidden" id="reset-token" name="token">
-                        {/* [BARU] Input tersembunyi untuk email */}
                         <input type="hidden" id="reset-email" name="email">
 
                         <div class="form-group floating-label">

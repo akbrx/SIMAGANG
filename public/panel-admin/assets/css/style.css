@@ -1168,16 +1168,13 @@ body {
     margin: 0;
     color: #6c757d;
 }
-/* Menggunakan kembali gaya .btn-logout dari sidebar */
 .pembimbing-header .btn-logout {
     flex-shrink: 0;
-    width: auto; /* Menghapus width 100% dari .btn-logout */
-    padding: 8px 15px; /* Padding lebih kecil */
-    font-size: 0.9rem; /* Font lebih kecil */
-    gap: 8px; /* Jarak ikon dan teks lebih kecil */
+    width: auto; 
+    padding: 8px 15px; 
+    font-size: 0.9rem; 
+    gap: 8px; 
 }
-
-/* Tombol Tambah FAB (Floating Action Button) */
 .fab {
     position: fixed;
     bottom: 30px;
