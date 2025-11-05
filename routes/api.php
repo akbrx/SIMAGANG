@@ -92,6 +92,6 @@ Route::prefix('admin')->group(function () {
         // POST /api/admin/mentor-notes -> store()
         // GET /api/admin/mentor-notes/{id} -> show()
         // DELETE /api/admin/mentor-notes/{id} -> destroy()
-        Route::apiResource('mentor-notes', MentorNoteController::class)->except(['update']);
+        Route::apiResource('mentor-notes', MentorNoteController::class);
     });
 });

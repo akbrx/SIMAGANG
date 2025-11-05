@@ -71,23 +71,52 @@
             return response()->json(['success' => true, 'data' => $mentorNote]);
         }
 
-
         /**
-         * [DELETE] Menghapus catatan milik pembimbing yang login.
+         * [PUT/PATCH] Memperbarui catatan yang sudah ada.
          */
-        public function destroy(Request $request, MentorNote $mentorNote)
+        public function update(Request $request, MentorNote $mentorNote)
         {
             // 1. Verifikasi kepemilikan
             if ($request->user()->id !== $mentorNote->administrator_id) {
                 return response()->json(['success' => false, 'message' => 'Tidak diizinkan'], 403);
             }
 
-            // 2. Hapus file dari storage
+            // 2. [PERBAIKAN] Validasi HANYA field 'notes'
+            $validator = Validator::make($request->all(), [
+                'notes' => 'nullable|string',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json(['success' => false, 'message' => $validator->errors()->first()], 422);
+            }
+
+            // 3. Update HANYA data 'notes'
+            $mentorNote->notes = $request->notes;
+
+            // 4. [DIHAPUS] Logika update file dan nama dihapus dari sini
+
+            $mentorNote->save();
+            $mentorNote->refresh(); // Muat ulang data (termasuk accessor URL)
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Catatan berhasil diperbarui.',
+                'data' => $mentorNote
+            ]);
+        }
+
+        /**
+         * [DELETE] Menghapus catatan milik pembimbing yang login.
+         */
+        public function destroy(Request $request, MentorNote $mentorNote)
+        {
+            if ($request->user()->id !== $mentorNote->administrator_id) {
+                return response()->json(['success' => false, 'message' => 'Tidak diizinkan'], 403);
+            }
+
             if ($mentorNote->disposition_file_path) {
                 Storage::disk('public')->delete($mentorNote->disposition_file_path);
             }
-
-            // 3. Hapus data dari database
             $mentorNote->delete();
 
             return response()->json([
