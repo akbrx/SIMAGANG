@@ -36,7 +36,8 @@ class AdminResetPasswordNotification extends Notification
     public function toMail(object $notifiable): MailMessage
     {
         // 1. Ambil URL Frontend dari .env atau gunakan default
-        $frontendUrl = env('FRONTEND_URL', 'https://magang.pekanbaru.go.id/');
+        // $frontendUrl = env('FRONTEND_URL', 'https://magang.pekanbaru.go.id/');
+        $frontendUrl = env('FRONTEND_URL', 'http://localhost:8000/');
 
         // 2. Buat URL dasar untuk panel admin
         $adminBaseUrl = rtrim($frontendUrl, '/') . '/admin';

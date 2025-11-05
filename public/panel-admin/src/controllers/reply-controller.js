@@ -2,7 +2,6 @@
  * @file Controller untuk Halaman Kirim Balasan.
  */
 
-// Impor model dari surat-model (karena fungsi sendReply sudah ada di sana)
 import * as suratModel from '../models/surat-model.js';
 
 export async function init() {

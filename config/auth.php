@@ -114,7 +114,7 @@ return [
         'administrators' => [
             'provider' => 'administrators',        // Provider yang kita buat di atas
             'table' => 'password_reset_tokens', // Bisa pakai tabel default Laravel
-            'expire' => 30,                     // Link valid selama 60 menit
+            'expire' => 30,                     // Link valid selama 30 menit
             'throttle' => 60,                   // Hanya bisa request 1x per 60 detik
         ],
     ],

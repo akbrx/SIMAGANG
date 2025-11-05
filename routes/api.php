@@ -73,6 +73,9 @@ Route::prefix('admin')->group(function () {
         
         // DELETE /api/admin/pengajuan/{id}: Menghapus pengajuan
         Route::delete('pengajuan/{id}', [AdminSubmissionController::class, 'destroy']);
+        
+        // [BARU] Endpoint untuk mengirim balasan (dengan file)
+        Route::post('pengajuan/{id}/reply', [AdminSubmissionController::class, 'sendReply']);
 
         // Pengelolaan Profil Admin Sendiri
         Route::get('profile', [AdminProfileController::class, 'show']);

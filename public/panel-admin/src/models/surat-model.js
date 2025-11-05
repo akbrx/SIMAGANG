@@ -111,3 +111,52 @@ export async function deleteSubmission(id) {
     return await response.json();
 }
 
+/**
+ * Mengirim balasan dan file PDF ke submission tertentu.
+ * Ini menggunakan FormData, jadi kita tidak set Content-Type secara manual.
+ * @param {string|number} id ID dari submission yang akan dibalas
+ * @param {FormData} formData Objek FormData yang berisi file dan data lainnya
+ * @returns {Promise<object>} Respon JSON dari server
+ */
+export async function sendReply(id, formData) {
+    // Ambil token dari (misalnya) localStorage
+    // !! PENTING: Pastikan nama token ini SAMA dengan yang lain di file ini
+    const token = localStorage.getItem('authToken'); // <-- Saya ganti dari 'adminToken' menjadi 'authToken' agar SAMA
+
+    if (!token) {
+        throw new Error('Autentikasi tidak ditemukan. Silakan login kembali.');
+    }
+
+    try {
+        // Endpoint API-nya SAMA, hanya beda '/reply' di akhir
+        const response = await fetch(`/api/admin/pengajuan/${id}/reply`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Accept': 'application/json',
+                // JANGAN tambahkan 'Content-Type', browser akan otomatis
+                // mengaturnya ke 'multipart/form-data' dengan 'boundary' yang benar
+            },
+            body: formData,
+        });
+
+        const result = await response.json();
+
+        if (!response.ok) {
+            let errorMsg = result.message || 'Terjadi kesalahan';
+            if (result.errors) {
+                // Ambil error validasi pertama
+                errorMsg = Object.values(result.errors)[0][0];
+            }
+            throw new Error(errorMsg);
+        }
+
+        return result;
+
+    } catch (error) {
+        console.error('Error in sendReply model:', error);
+        // Lempar error lagi agar controller bisa menangkapnya
+        throw error;
+    }
+}
+

@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\SuratBalasanMail;
+use Illuminate\Validation\Rule;
 use Illuminate\Http\Request;
 use App\Models\Submission;
 use Illuminate\Support\Facades\Validator;
@@ -58,7 +61,7 @@ class AdminSubmissionController extends Controller
         $submission = Submission::find($id);
         if (!$submission) {
             return response()->json(['success' => false, 'message' => 'Data pengajuan tidak ditemukan.'], 404);
-        }   
+        }
 
         // 4. --- LOGIKA TIMESTAMP YANG BARU DAN LEBIH AKURAT ---
 
@@ -67,7 +70,7 @@ class AdminSubmissionController extends Controller
         if (is_null($submission->first_accessed_at) && $submission->status === 'DIAJUKAN' && $request->status !== 'DIAJUKAN') {
             $submission->first_accessed_at = now();
         }
-        
+
         // B. Selalu update status, catatan, dan siapa yang terakhir memproses
         $submission->status = $request->status;
         $submission->admin_notes = $request->admin_notes;
@@ -98,10 +101,10 @@ class AdminSubmissionController extends Controller
                 $submission->processed_by = null;
                 break;
         }
-        
+
         $submission->save();
         $submission->load(['student', 'processor']);
-        
+
         // 5. Berikan response sukses (Tetap sama)
         return response()->json([
             'success' => true,
@@ -176,12 +179,101 @@ class AdminSubmissionController extends Controller
                 'success' => true,
                 'message' => 'Data pengajuan berhasil dihapus.'
             ], 200);
-
+            
         } catch (Exception $e) {
             // 7. Tangani jika ada error server (misal: error database)
             return response()->json([
                 'success' => false,
                 'message' => 'Terjadi kesalahan saat menghapus data.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+    /**
+     * [Endpoint POST /api/admin/pengajuan/{id}/reply]
+     * Mengirim email balasan dengan lampiran PDF ke mahasiswa
+     * dan mengubah status pengajuan menjadi DITERIMA.
+     */
+    public function sendReply(Request $request, $id)
+    {
+        // 1. Validasi Input
+        $validasiBidang = ['SPBE', 'Infrastruktur', 'Statistik', 'IKP'];
+
+        $validator = Validator::make($request->all(), [
+            'email_penerima' => 'required|email',
+            'bidang_penempatan' => ['required', 'string', Rule::in($validasiBidang)],
+            'nama_pembimbing' => 'required|string|max:255',
+            'kontak_pembimbing' => 'required|string|max:20',
+            'catatan' => 'nullable|string|max:2000',
+            'surat_balasan_file' => 'required|file|mimes:pdf|max:2048', // Maks 2MB
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['success' => false, 'errors' => $validator->errors()], 422);
+        }
+
+        // 2. Cari data pengajuan
+        $submission = Submission::find($id);
+        if (!$submission) {
+            return response()->json(['success' => false, 'message' => 'Data pengajuan tidak ditemukan.'], 404);
+        }
+
+        try {
+            // 3. Simpan File Balasan ke Storage
+            $file = $request->file('surat_balasan_file');
+            // Simpan di 'storage/app/public/surat_balasan'
+            $filePath = $file->store('surat_balasan', 'public');
+
+            // Dapatkan path absolut untuk lampiran email
+            $absolutePath = storage_path('app/public/' . $filePath);
+
+            // 4. Siapkan data untuk email
+            $mailData = [
+                'bidang_penempatan' => $request->bidang_penempatan,
+                'nama_pembimbing' => $request->nama_pembimbing,
+                'kontak_pembimbing' => $request->kontak_pembimbing,
+                'catatan' => $request->catatan,
+            ];
+
+            // 5. Kirim Email (dengan try-catch jika gagal)
+            Mail::to($request->email_penerima)
+                ->send(new SuratBalasanMail($mailData, $absolutePath));
+
+            // 6. Update Database
+            // (Asumsi status 'DITERIMA' saat mengirim balasan)
+            $submission->status = 'DITERIMA';
+            $submission->accepted_at = now();
+            $submission->rejected_at = null; // Reset jika sebelumnya ditolak
+            $submission->bidang_penempatan = $request->bidang_penempatan;
+            $submission->nama_pembimbing = $request->nama_pembimbing;
+            $submission->kontak_pembimbing = $request->kontak_pembimbing;
+            $submission->surat_balasan = $filePath; // Simpan path file balasan
+            $submission->processed_by = $request->user()->id; // Admin yang login
+
+            // (Hapus file balasan lama jika ada, untuk jaga-jaga)
+            // if ($submission->getOriginal('surat_balasan')) {
+            //     Storage::disk('public')->delete($submission->getOriginal('surat_balasan'));
+            // }
+
+            $submission->save();
+
+            // 7. Berikan respon sukses
+            return response()->json([
+                'success' => true,
+                'message' => 'Surat balasan berhasil dikirim dan status pengajuan telah diperbarui.',
+                'data' => new SubmissionResource($submission->load(['student', 'processor'])),
+            ]);
+        } catch (\Exception $e) {
+            // Tangani jika error (misal: email gagal kirim atau file gagal simpan)
+
+            // Hapus file yang mungkin sudah ter-upload jika terjadi error
+            if (isset($filePath) && Storage::disk('public')->exists($filePath)) {
+                Storage::disk('public')->delete($filePath);
+            }
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Gagal mengirim email atau menyimpan data. Coba lagi.',
                 'error' => $e->getMessage()
             ], 500);
         }
