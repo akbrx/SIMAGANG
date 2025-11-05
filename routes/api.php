@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\AdminProfileController; 
 use App\Http\Controllers\Api\AdministratorController; 
 use App\Http\Controllers\Api\PublicContactController;
+use App\Http\Controllers\Api\MentorNoteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,16 +71,24 @@ Route::prefix('admin')->group(function () {
         // GET /api/admin/pengajuan/{id}/file: Mendapatkan URL file pengajuan (Admin-only)
         Route::get('pengajuan/{id}/file', [AdminSubmissionController::class, 'downloadFile']);
         
-        // [BARU] DELETE /api/admin/pengajuan/{id}: Menghapus pengajuan
+        // DELETE /api/admin/pengajuan/{id}: Menghapus pengajuan
         Route::delete('pengajuan/{id}', [AdminSubmissionController::class, 'destroy']);
 
-        // [BARU] Pengelolaan Profil Admin Sendiri
+        // Pengelolaan Profil Admin Sendiri
         Route::get('profile', [AdminProfileController::class, 'show']);
         Route::put('profile', [AdminProfileController::class, 'update']);
         Route::put('profile/password', [AdminProfileController::class, 'updatePassword']);
 
-        // [BARU] Daftar Semua Admin (untuk dropdown)
+        // Daftar Semua Admin (untuk dropdown)
         Route::get('administrators', [AdministratorController::class, 'index']);
         Route::put('administrators/{id}/set-primary-contact', [AdministratorController::class, 'setPrimaryContact']);
+
+        // Rute untuk Halaman Pembimbing (CRUD Catatan Magang)
+        // Ini akan membuat:
+        // GET /api/admin/mentor-notes -> index()
+        // POST /api/admin/mentor-notes -> store()
+        // GET /api/admin/mentor-notes/{id} -> show()
+        // DELETE /api/admin/mentor-notes/{id} -> destroy()
+        Route::apiResource('mentor-notes', MentorNoteController::class)->except(['update']);
     });
 });

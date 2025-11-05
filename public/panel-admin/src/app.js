@@ -89,60 +89,104 @@ function updateAdminProfile() {
     }
 }
 
+// Fungsi untuk menyesuaikan sidebar berdasarkan role
+function updateSidebarForRole(role) {
+    const dashboardLink = document.querySelector('.sidebar-menu a[href="#dashboard"]');
+    const suratLink = document.querySelector('.sidebar-menu a[href="#surat"]');
+    const pengaturanLink = document.querySelector('.sidebar-menu a[href="#pengaturan"]');
+    const pembimbingLink = document.querySelector('.sidebar-menu a[href="#pembimbing"]');
+
+    if (role === 'pembimbing') {
+        // Sembunyikan link Admin
+        if (dashboardLink) dashboardLink.style.display = 'none';
+        if (suratLink) suratLink.style.display = 'none';
+        if (pengaturanLink) pengaturanLink.style.display = 'none';
+        // Tampilkan link Pembimbing
+        if (pembimbingLink) pembimbingLink.style.display = 'flex'; // 'flex' sesuai gaya asli
+    } else { // Asumsikan 'admin'
+        // Tampilkan link Admin
+        if (dashboardLink) dashboardLink.style.display = 'flex';
+        if (suratLink) suratLink.style.display = 'flex';
+        if (pengaturanLink) pengaturanLink.style.display = 'flex';
+        // Sembunyikan link Pembimbing
+        if (pembimbingLink) pembimbingLink.style.display = 'none';
+    }
+}
+
 async function router() { 
 
     const currentHash = window.location.hash;
     const token = localStorage.getItem('authToken');
+    const adminRole = localStorage.getItem('adminRole');
 
     const isLoginPage = window.location.hash === '#login' || window.location.hash === '';
     const isResetPage = window.location.hash.startsWith('#reset-password');
     const isForgotPage = currentHash === '#forgot-password';
-    const isPembimbingPage = currentHash === '#pembimbing';
+    const isPublicPage = isLoginPage || isResetPage || isForgotPage;
 
-    const isStandalonePage = isLoginPage || isResetPage || isForgotPage || isPembimbingPage;
-    
-    if (!token && !isStandalonePage) {
+    if (!token && !isPublicPage) {
         window.location.hash = '#login';
         return; 
     }
-    if (token && (isLoginPage || isResetPage || isForgotPage)) {
-        if(!isResetPage && !isForgotPage) window.location.hash = '#dashboard';
-        return;
+
+    if (token && isPublicPage) {
+        if(!isResetPage && !isForgotPage) {
+            window.location.hash = adminRole === 'pembimbing' ? '#pembimbing' : '#dashboard';
+        }
     }
 
-    let path = window.location.hash.split('?')[0] || (token ? '#dashboard' : '#login');
-    if (path === '') path = token ? '#dashboard' : '#login';
+    let path = currentHash.split('?')[0] || (token ? (adminRole === 'pembimbing' ? '#pembimbing' : '#dashboard') : '#login');
+    if (path === '') path = token ? (adminRole === 'pembimbing' ? '#pembimbing' : '#dashboard') : '#login';
+
+    const adminOnlyRoutes = ['#dashboard', '#surat', '#pengaturan', '#surat-balas'];
+    const pembimbingOnlyRoutes = ['#pembimbing'];
+
+    if (adminRole === 'pembimbing' && adminOnlyRoutes.includes(path)) {
+        window.location.hash = '#pembimbing';
+        return; // Hentikan dan jalankan ulang router
+    }
+    if (adminRole === 'admin' && pembimbingOnlyRoutes.includes(path)) {
+        window.location.hash = '#dashboard';
+        return; // Hentikan dan jalankan ulang router
+    }
 
     const appContainer = document.getElementById('app');
     const appWrapper = document.getElementById('app-wrapper');
 
-    if (isStandalonePage || path === '#surat-balas') {
-         document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
+    // Update menu aktif
+    if (!isPublicPage) {
+        handleActiveMenu(path);
     } else {
-         handleActiveMenu(path);
+         document.querySelectorAll('.sidebar-menu a').forEach(link => link.classList.remove('active'));
     }
 
     const route = routes[path];
 
     if (route) {
+        // [PERUBAHAN] Halaman Pembimbing juga menggunakan 'login-layout' (tanpa sidebar)
         if (path === '#login' || path === '#reset-password' || path === '#forgot-password' || path === '#pembimbing') {
             appWrapper.classList.add('login-layout');
             appWrapper.classList.remove('sidebar-is-open');
         } else {
+            // Halaman admin normal
             appWrapper.classList.remove('login-layout');
             updateAdminProfile();
+            updateSidebarForRole(adminRole); // [BARU] Sesuaikan sidebar
         }
 
         appContainer.innerHTML = route.view.render();
         if (route.controller && typeof route.controller.init === 'function') {
            await route.controller.init();
         }
+        
+        // Auto-close sidebar di mobile (tetap sama)
         const isMobile = window.innerWidth <= 992; 
         if (isMobile && appWrapper.classList.contains('sidebar-is-open')) {
             appWrapper.classList.remove('sidebar-is-open');
         }
     } else {
-        window.location.hash = token ? '#dashboard' : '#login';
+        // Fallback jika rute tidak ditemukan
+        window.location.hash = token ? (adminRole === 'pembimbing' ? '#pembimbing' : '#dashboard') : '#login';
     }
 }       
 
@@ -153,6 +197,7 @@ function initAppLayout() {
         logoutBtn.addEventListener('click', () => {
             localStorage.removeItem('authToken');
             localStorage.removeItem('adminName');
+            localStorage.removeItem('adminRole');
             window.location.hash = '#login';
         });
     }

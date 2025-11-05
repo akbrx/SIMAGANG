@@ -24,7 +24,6 @@
             </div>
 
             <div class="sidebar-profile">
-                {{-- Anda bisa menampilkan nama admin yang login di sini menggunakan Auth::user()->nama --}}
                 <span class="profile-name"></span>
             </div>
 
@@ -32,6 +31,7 @@
                 <li><a href="#dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
                 <li><a href="#surat"><i class="fas fa-envelope"></i> Surat</a></li>
                 <li><a href="#pengaturan"><i class="fas fa-cog"></i> Pengaturan</a></li>
+                <li style="display: none;"><a href="#pembimbing"><i class="fas fa-chalkboard-teacher"></i> Catatan Magang</a></li>
             </ul>
 
             <div class="sidebar-footer">
@@ -46,9 +46,7 @@
              <button id="sidebar-toggle" class="sidebar-toggle" title="Buka/Tutup Sidebar">
                 <i class="fas fa-bars"></i>
             </button>
-            {{-- Konten dinamis akan dimuat oleh JavaScript ke dalam div #app --}}
             <div class="content-area" id="app">
-                {{-- Placeholder - Konten awal bisa kosong atau berisi loading spinner --}}
             </div>
         </main>
     </div>

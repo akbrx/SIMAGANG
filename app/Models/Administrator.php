@@ -48,6 +48,14 @@ class Administrator extends Authenticatable implements CanResetPasswordContract
     }
 
     /**
+     * Relasi One-to-Many: Satu Admin (Pembimbing) memiliki banyak Catatan Magang.
+     */
+    public function mentorNotes()
+    {
+        return $this->hasMany(MentorNote::class);
+    }
+
+    /**
      * Kirim notifikasi reset password kustom (override).
      *
      * @param  string  $token

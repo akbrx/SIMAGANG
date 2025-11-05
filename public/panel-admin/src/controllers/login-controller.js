@@ -46,9 +46,13 @@ export const init = () => {
                 // Simpan token ke localStorage untuk sesi login
                 localStorage.setItem('authToken', data.token);
                 localStorage.setItem('adminName', data.user.nama);
+                localStorage.setItem('adminRole', data.user.role);
 
-                // Arahkan ke halaman dashboard
-                window.location.hash = '#dashboard';
+                if (data.user.role === 'pembimbing') {
+                    window.location.hash = '#pembimbing';
+                } else {
+                    window.location.hash = '#dashboard';
+                }
             } else {
                 // Tampilkan pesan error dari backend (misal: "Password salah")
                 errorMessage.textContent = data.message || 'Terjadi kesalahan saat login.';
