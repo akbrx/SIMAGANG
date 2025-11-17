@@ -23,9 +23,11 @@ export function render() {
                     <button id="pembimbing-add-btn" class="btn btn-primary-solid">
                         <i class="fas fa-plus"></i> Tambah Catatan
                     </button>
-                    <button class="btn-logout" id="pembimbing-logout-btn" title="Logout">
-                        <i class="fas fa-sign-out-alt"></i> Logout
-                    </button>
+                    <div class="logout-container">
+                        <button class="btn-logout" id="pembimbing-logout-btn" title="Logout">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
                 </div>
             </header>
 

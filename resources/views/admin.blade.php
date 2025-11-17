@@ -32,6 +32,7 @@
                 <li><a href="#surat"><i class="fas fa-envelope"></i> Surat</a></li>
                 <li><a href="#pengaturan"><i class="fas fa-cog"></i> Pengaturan</a></li>
                 <li style="display: none;"><a href="#pembimbing"><i class="fas fa-chalkboard-teacher"></i> Catatan Magang</a></li>
+                <li style="display: none;"><a href="#kadis"><i class="fas fa-briefcase"></i> Disposisi Surat</a></li>
             </ul>
 
             <div class="sidebar-footer">
@@ -62,6 +63,93 @@
             <div class="confirmation-buttons">
                 <button id="confirm-no-btn" class="btn btn-secondary-confirm">Tidak</button>
                 <button id="confirm-yes-btn" class="btn-danger"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Disposisi -->
+     <div id="kadis-disposisi-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Disposisi Surat</h2>
+                <button id="close-disposisi-modal-btn" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Info Pengaju (diisi oleh JS) -->
+                <div id="disposisi-applicant-info" class="applicant-info-header">
+                    <p>Memuat info pengaju...</p>
+                </div>
+                
+                <!-- Form Disposisi -->
+                <form id="disposisi-form">
+                    <input type="hidden" id="disposisi-submission-id">
+                    <div class="form-group">
+                        <label>Silakan pilih Bidang untuk disposisi surat ini:</label>
+                        <div class="bidang-radio-group">
+                            <label class="radio-label">
+                                <input type="radio" name="bidang" value="SPBE" required>
+                                <span>SPBE</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="bidang" value="Infrastruktur">
+                                <span>Infrastruktur</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="bidang" value="Statistik">
+                                <span>Statistik</span>
+                            </label>
+                            <label class="radio-label">
+                                <input type="radio" name="bidang" value="IKP">
+                                <span>IKP</span>
+                            </label>
+                        </div>
+                    </div>
+                    <p id="disposisi-error-message" class="info-message error small" style="display: none;"></p>
+                </form>
+            </div>
+            <div class="modal-footer" id="disposisi-modal-footer">
+                <button class="btn-danger" id="disposisi-reject-btn">
+                    <i class="fas fa-times"></i> Tolak Pengajuan
+                </button>
+                <button type="submit" class="btn btn-primary" id="disposisi-submit-btn" form="disposisi-form">
+                    <span class="btn-text">Kirim Disposisi</span>
+                    <div class="spinner"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="kabid-assign-modal" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Tugaskan Pembimbing</h2>
+                <button id="close-kabid-modal-btn" class="modal-close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <!-- Info Pengaju (diisi oleh JS) -->
+                <div id="kabid-applicant-info" class="applicant-info-header">
+                    <p>Memuat info pengaju...</p>
+                </div>
+                
+                <!-- Form Penugasan -->
+                <form id="kabid-assign-form">
+                    <input type="hidden" id="kabid-submission-id">
+                    <div class="form-group">
+                        <label for="kabid-pembimbing-name">Nama Pembimbing (Staf)</label>
+                        <input type="text" id="kabid-pembimbing-name" required placeholder="Masukkan nama staf pembimbing">
+                    </div>
+                    <div class="form-group">
+                        <label for="kabid-pembimbing-phone">Nomor HP Pembimbing</label>
+                        <input type="tel" id="kabid-pembimbing-phone" required placeholder="Contoh: 0812...">
+                    </div>
+                    <p id="kabid-error-message" class="info-message error small" style="display: none;"></p>
+                </form>
+            </div>
+            <div class="modal-footer" id="kabid-modal-footer">
+                <button type="submit" class="btn btn-primary" id="kabid-submit-btn" form="kabid-assign-form">
+                    <span class="btn-text">Kirim ke Bagian Umum</span>
+                    <div class="spinner"></div>
+                </button>
             </div>
         </div>
     </div>

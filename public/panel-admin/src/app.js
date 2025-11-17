@@ -17,6 +17,10 @@ import * as replyView from './views/reply-view.js';
 import * as replyController from './controllers/reply-controller.js';
 import * as pembimbingView from './views/pembimbing-view.js';
 import * as pembimbingController from './controllers/pembimbing-controller.js';
+import * as kadisView from './views/kadis-view.js';
+import * as kadisController from './controllers/kadis-controller.js';
+import * as kabidView from './views/kabid-view.js';
+import * as kabidController from './controllers/kabid-controller.js';
 
 
 export function showConfirmation(title, message, confirmText = 'Ya') {
@@ -63,7 +67,9 @@ const routes = {
     '#reset-password': { view: resetPasswordView, controller: resetPasswordController },
     '#forgot-password': { view: forgotPasswordView, controller: forgotPasswordController },
     '#surat-balas': { view: replyView, controller: replyController },
-    '#pembimbing': { view: pembimbingView, controller: pembimbingController }
+    '#pembimbing': { view: pembimbingView, controller: pembimbingController },
+    '#kadis': { view: kadisView, controller: kadisController },
+    '#kabid': { view: kabidView, controller: kabidController }
 };
 
 // Fungsi untuk menangani status aktif pada menu sidebar
@@ -95,21 +101,22 @@ function updateSidebarForRole(role) {
     const suratLink = document.querySelector('.sidebar-menu a[href="#surat"]');
     const pengaturanLink = document.querySelector('.sidebar-menu a[href="#pengaturan"]');
     const pembimbingLink = document.querySelector('.sidebar-menu a[href="#pembimbing"]');
+    const kadisLink = document.querySelector('.sidebar-menu a[href="#kadis"]');
+
+    if (dashboardLink) dashboardLink.style.display = 'none';
+    if (suratLink) suratLink.style.display = 'none';
+    if (pengaturanLink) pengaturanLink.style.display = 'none';
+    if (pembimbingLink) pembimbingLink.style.display = 'none';
+    if (kadisLink) kadisLink.style.display = 'none';
 
     if (role === 'pembimbing') {
-        // Sembunyikan link Admin
-        if (dashboardLink) dashboardLink.style.display = 'none';
-        if (suratLink) suratLink.style.display = 'none';
-        if (pengaturanLink) pengaturanLink.style.display = 'none';
-        // Tampilkan link Pembimbing
-        if (pembimbingLink) pembimbingLink.style.display = 'flex'; // 'flex' sesuai gaya asli
+        if (pembimbingLink) pembimbingLink.style.display = 'flex';
+    } else if (role === 'kadis') { // [BARU]
+        if (kadisLink) kadisLink.style.display = 'flex';
     } else { // Asumsikan 'admin'
-        // Tampilkan link Admin
         if (dashboardLink) dashboardLink.style.display = 'flex';
         if (suratLink) suratLink.style.display = 'flex';
         if (pengaturanLink) pengaturanLink.style.display = 'flex';
-        // Sembunyikan link Pembimbing
-        if (pembimbingLink) pembimbingLink.style.display = 'none';
     }
 }
 
@@ -123,8 +130,13 @@ async function router() {
     const isResetPage = window.location.hash.startsWith('#reset-password');
     const isForgotPage = currentHash === '#forgot-password';
     const isPublicPage = isLoginPage || isResetPage || isForgotPage;
+    const isKadisPage = currentHash === '#kadis';
+    const isPembimbingPage = currentHash === '#pembimbing';
+    const isKabidPage = currentHash === '#kabid';
 
-    if (!token && !isPublicPage) {
+    const isStandalonePage = isPublicPage || isKadisPage || isPembimbingPage || isKabidPage;
+
+    if (!token && !isPublicPage && !isKadisPage) {
         window.location.hash = '#login';
         return; 
     }
@@ -135,8 +147,8 @@ async function router() {
         }
     }
 
-    let path = currentHash.split('?')[0] || (token ? (adminRole === 'pembimbing' ? '#pembimbing' : '#dashboard') : '#login');
-    if (path === '') path = token ? (adminRole === 'pembimbing' ? '#pembimbing' : '#dashboard') : '#login';
+    let path = currentHash.split('?')[0] || (token ? (adminRole === 'pembimbing' ? '#pembimbing' : (adminRole === 'kadis' ? '#kadis' : '#dashboard')) : '#login');
+    if (path === '') path = token ? (adminRole === 'pembimbing' ? '#pembimbing' : (adminRole === 'kadis' ? '#kadis' : '#dashboard')) : '#login';
 
     const adminOnlyRoutes = ['#dashboard', '#surat', '#pengaturan', '#surat-balas'];
     const pembimbingOnlyRoutes = ['#pembimbing'];
@@ -163,15 +175,13 @@ async function router() {
     const route = routes[path];
 
     if (route) {
-        // [PERUBAHAN] Halaman Pembimbing juga menggunakan 'login-layout' (tanpa sidebar)
-        if (path === '#login' || path === '#reset-password' || path === '#forgot-password' || path === '#pembimbing') {
+        if (isStandalonePage) {
             appWrapper.classList.add('login-layout');
             appWrapper.classList.remove('sidebar-is-open');
         } else {
-            // Halaman admin normal
             appWrapper.classList.remove('login-layout');
             updateAdminProfile();
-            updateSidebarForRole(adminRole); // [BARU] Sesuaikan sidebar
+            updateSidebarForRole(adminRole);
         }
 
         appContainer.innerHTML = route.view.render();
@@ -185,8 +195,8 @@ async function router() {
             appWrapper.classList.remove('sidebar-is-open');
         }
     } else {
-        // Fallback jika rute tidak ditemukan
-        window.location.hash = token ? (adminRole === 'pembimbing' ? '#pembimbing' : '#dashboard') : '#login';
+        const homeRoute = token ? (adminRole === 'pembimbing' ? '#pembimbing' : (adminRole === 'kadis' ? '#kadis' : '#dashboard')) : '#login';
+        window.location.hash = homeRoute;
     }
 }       
 
