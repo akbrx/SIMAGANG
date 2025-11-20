@@ -34,9 +34,6 @@ export function render() {
                             <span class="btn-text">Simpan Password Baru</span>
                             <div class="spinner"></div>
                         </button>
-                         <div class="back-to-login">
-                            <a href="#login">Kembali ke Login</a>
-                        </div>
                     </form>
                 </div>
             </div>
