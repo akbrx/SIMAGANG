@@ -1206,6 +1206,14 @@ a.note-link {
         opacity: 1;
     }
 
+    .content-container h2 {
+        animation: none;
+        opacity: 1;
+        transform: none;
+        font-size: 1.1rem; 
+        margin-top: 10px;
+    }
+
     /* Layout */
     .procedure-timeline { flex-direction: column; align-items: center; gap: 40px; }
     .procedure-timeline::before { display: none; }
